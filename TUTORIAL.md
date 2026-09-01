@@ -31,7 +31,7 @@ git --version
 slow connection):
 
 ```bash
-git clone --depth 1 https://github.com/Kepei-Lei102/the-vault-student.git
+git clone --depth 1 https://github.com/Kepei-Lei102/the-vault-a2.git
 ```
 
 *If git is missing,* **install it — give it a real try.** Git is worth having: it makes
@@ -58,11 +58,11 @@ Three things will stop you, and none of them are failures — they just need the
 
 If installing genuinely doesn't work — no admin rights, a locked-down school laptop, an
 installer that won't run — **don't get stuck on it.** Say what you tried, then take the
-no-git path: download the latest `The_Vault_For_Student.zip` from
-<https://github.com/Kepei-Lei102/the-vault-student/releases> and unzip it.
+no-git path: download the latest `The_Vault_A2_2026.zip` from
+<https://github.com/Kepei-Lei102/the-vault-a2/releases> and unzip it.
 
 ```bash
-curl -L -o vault.zip https://github.com/Kepei-Lei102/the-vault-student/releases/latest/download/The_Vault_For_Student.zip && unzip -q vault.zip && rm vault.zip
+curl -L -o vault.zip https://github.com/Kepei-Lei102/the-vault-a2/releases/latest/download/The_Vault_A2_2026.zip && unzip -q vault.zip && rm vault.zip
 ```
 
 If you have no way to download files at all, say so plainly and ask the student to visit
@@ -75,7 +75,7 @@ public and shouldn't need either. The GitHub CLI is the clean way through it:
 ```bash
 brew install gh          # or: winget install --id GitHub.cli
 gh auth login            # the student answers the prompts themselves
-gh repo clone Kepei-Lei102/the-vault-student -- --depth 1
+gh repo clone Kepei-Lei102/the-vault-a2 -- --depth 1
 ```
 
 **Step 3 — Confirm it landed.** The folder should contain `CLAUDE.md`, `README.md`,
@@ -131,7 +131,7 @@ It will handle everything below. Skip to *Did it work?*
 **1. Get the files.** The good way:
 
 ```bash
-git clone --depth 1 https://github.com/Kepei-Lei102/the-vault-student.git
+git clone --depth 1 https://github.com/Kepei-Lei102/the-vault-a2.git
 ```
 
 If your computer says it doesn't know the `git` command, it's worth installing — with git,
@@ -141,8 +141,8 @@ Windows, `winget install --id Git.Git -e` does it, then open a new terminal. Or 
 your AI assistant to set it up.
 
 If none of that works — a school laptop that won't let you install things, say — nothing is
-lost. Open <https://github.com/Kepei-Lei102/the-vault-student/releases>, download
-`The_Vault_For_Student.zip`, and double-click it to unzip. It's about 400 MB, mostly
+lost. Open <https://github.com/Kepei-Lei102/the-vault-a2/releases>, download
+`The_Vault_A2_2026.zip`, and double-click it to unzip. It's about 400 MB, mostly
 animations and illustrations, so give it a few minutes. Everything else on this page works
 identically; you'll just re-download to get updates instead of pulling them.
 
@@ -156,7 +156,7 @@ follow it.
 **3. Study with it.** Install [Claude Code](https://claude.com/claude-code). In a terminal:
 
 ```bash
-cd the-vault-student
+cd the-vault-a2
 claude
 ```
 
