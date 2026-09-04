@@ -5,24 +5,24 @@ written for international curricula: Cambridge IGCSE and A-Level, IB, and AP.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
-> **Edition** `student-2026-08-31` · built 2026-09-01 from commit `cf4f034` + uncommitted changes  
-> 359 cards · 446 diagrams · 74 explainers · 107 illustrations
+> **Edition** `student-2026-09-02` · built 2026-09-04 from commit `47b4330` + uncommitted changes  
+> 366 cards · 455 diagrams · 75 explainers · 110 illustrations
 
 ---
 
 ## What's inside
 
-**359 Markdown cards** across five collections, plus the figures that go with them —
-**446 SVG diagrams** (many animated), **74 MP4 explainers**, and
-**107 illustrations and comics**.
+**366 Markdown cards** across five collections, plus the figures that go with them —
+**455 SVG diagrams** (many animated), **75 MP4 explainers**, and
+**110 illustrations and comics**.
 
 | Folder | Cards | What it is |
 |---|---|---|
 | `Mathematics/` | 220 | Number, Algebra, Geometry, Trigonometry, Calculus, Statistics, Probability, Functions, Combinatorics, Linear Algebra, Coordinate Geometry, Measurement, Foundations, Problem Solving — plus formula-sheet references. |
-| `Physics/` | 44 | Mechanics, Foundations (measurement), Thermal, Fields, Electricity, Oscillations, Waves, Modern, Astronomy, Medical. |
-| `CS/` | 46 | Foundations, Logic Circuits, Algorithms, Data Representation, Hardware Systems, Systems Software, Data Structures. |
-| `Stories/` | 38 | Fun-first historical narratives — the human drama of mathematics and science as its own subject. |
-| `Meta/` | 11 | Methodology cards: how to *think* across domains. |
+| `Physics/` | 45 | Mechanics, Foundations (measurement), Thermal, Fields, Electricity, Oscillations, Waves, Modern, Astronomy, Medical. |
+| `CS/` | 48 | Foundations, Logic Circuits, Algorithms, Data Representation, Hardware Systems, Systems Software, Data Structures. |
+| `Stories/` | 40 | Fun-first historical narratives — the human drama of mathematics and science as its own subject. |
+| `Meta/` | 13 | Methodology cards: how to *think* across domains. |
 
 Every concept appears in **both English and Chinese**, with key terminology anchored in each
 card's **中文锚点** section.

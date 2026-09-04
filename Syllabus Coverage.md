@@ -10,8 +10,8 @@ not a claim that the point is unimportant. Ask your tutor (or the AI reading thi
 vault) to search the cards before concluding anything is missing: the same content
 is often taught under a different heading.
 
-> **Edition** `student-2026-08-31` · built 2026-09-01 from commit `cf4f034` + uncommitted changes  
-> 359 cards · 446 diagrams · 74 explainers · 107 illustrations
+> **Edition** `student-2026-09-02` · built 2026-09-04 from commit `47b4330` + uncommitted changes  
+> 366 cards · 455 diagrams · 75 explainers · 110 illustrations
 
 ---
 
@@ -125,7 +125,7 @@ is often taught under a different heading.
 
 ## Cambridge IGCSE 0606 Additional Mathematics
 
-*67 syllabus points · 82 card references*
+*67 syllabus points · 83 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -195,7 +195,7 @@ is often taught under a different heading.
 | 14.12 | [[Integration]] |
 | 14.13 | [[Integration]] |
 | 14.14 | [[Kinematics Calculus]] |
-| 14.15 | [[Kinematics Calculus]] |
+| 14.15 | [[Kinematics Calculus]], [[Travel Graphs (Vocab)]] |
 
 ## Cambridge IGCSE 0625 Physics
 
@@ -220,7 +220,7 @@ is often taught under a different heading.
 
 ## Cambridge A-Level 9231 Further Mathematics
 
-*24 syllabus points · 53 card references*
+*24 syllabus points · 54 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -241,7 +241,7 @@ is often taught under a different heading.
 | 3.2 | [[Centre of Mass]], [[Forces and Equilibrium]], [[Torque]] |
 | 3.3 | [[Circular Motion]] |
 | 3.4 | [[Elastic Strings and Springs]], [[Hooke's Law for Springs]] |
-| 3.5 | [[Differential Equations]], [[Gravitational Fields]] |
+| 3.5 | [[Differential Equations]], [[Gravitational Fields]], [[Linear Motion under a Variable Force]] |
 | 3.6 | [[Linear Momentum]], [[Newton's Law of Restitution]] |
 | 4.1 | [[Continuous Random Variables]] |
 | 4.2 | [[t-Tests]] |
@@ -355,7 +355,7 @@ is often taught under a different heading.
 
 ## Cambridge A-Level 9618 Computer Science
 
-*31 syllabus points · 61 card references*
+*32 syllabus points · 63 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -380,6 +380,7 @@ is often taught under a different heading.
 | 11.2 | [[Cambridge Pseudocode]] |
 | 11.3 | [[Cambridge Pseudocode]], [[Program Design]] |
 | 12.2 | [[Program Design]] |
+| 13.1 | [[User-Defined Data Types]] |
 | 13.3 | [[Floating-Point Representation]] |
 | 15.1 | [[CISC vs RISC]], [[Operating Systems]], [[Pipelining and Simultaneous Multithreading]] |
 | 15.2 | [[Boolean Algebra]], [[Flip-Flops]], [[Karnaugh Maps]], [[Logic Gates]] |
@@ -389,7 +390,7 @@ is often taught under a different heading.
 | 19.1a | [[Searching]] |
 | 19.1b | [[Sorting]] |
 | 19.2 | [[Recursion]] |
-| 20.1 | [[Assembly Language]] |
+| 20.1 | [[Assembly Language]], [[Object-Oriented Programming]] |
 
 ## Cambridge A-Level 9702 Physics
 
@@ -440,7 +441,7 @@ is often taught under a different heading.
 
 ## Cambridge A-Level 9709 Mathematics
 
-*38 syllabus points · 92 card references*
+*38 syllabus points · 93 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -468,7 +469,7 @@ is often taught under a different heading.
 | 3.8 | [[Differential Equations]], [[Exponential Growth and Decay]] |
 | 3.9 | [[Complex Numbers]] |
 | 4.1 | [[Force (Vocab)]], [[Forces and Equilibrium]], [[Friction (Vocab)]], [[Normal Force (Vocab)]] |
-| 4.2 | [[Kinematics Calculus]], [[SUVAT]] |
+| 4.2 | [[Kinematics Calculus]], [[SUVAT]], [[Travel Graphs (Vocab)]] |
 | 4.3 | [[Linear Momentum]] |
 | 4.4 | [[Force (Vocab)]], [[Newton's Laws of Motion]], [[Tension (Vocab)]] |
 | 4.5 | [[Work, Energy and Power]] |
@@ -485,11 +486,16 @@ is often taught under a different heading.
 
 ## AP Computer Science A
 
-*7 syllabus points · 9 card references*
+*12 syllabus points · 14 card references*
 
 | Syllabus point | Cards |
 |---|---|
+| 1.12 | [[Object-Oriented Programming]] |
 | 2.12 | [[Big-O Notation]] |
+| 3.1 | [[Object-Oriented Programming]] |
+| 3.3 | [[Object-Oriented Programming]] |
+| 3.4 | [[Object-Oriented Programming]] |
+| 3.5 | [[Object-Oriented Programming]] |
 | 4.3 | [[Arrays]] |
 | 4.4 | [[Arrays]] |
 | 4.14 | [[Searching]] |
@@ -548,7 +554,7 @@ is often taught under a different heading.
 
 ## AP Physics C: Mechanics
 
-*30 syllabus points · 44 card references*
+*31 syllabus points · 45 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -563,6 +569,7 @@ is often taught under a different heading.
 | 2.6 | [[Gravitational Fields]] |
 | 2.7 | [[Braking Systems]], [[Friction (Vocab)]], [[The Friction Limit]] |
 | 2.8 | [[Hooke's Law for Springs]], [[Stress, Strain and Young Modulus]] |
+| 2.9 | [[Linear Motion under a Variable Force]] |
 | 2.10 | [[Circular Motion]] |
 | 3.1 | [[Work, Energy and Power]] |
 | 3.2 | [[Work, Energy and Power]] |
@@ -593,7 +600,7 @@ is often taught under a different heading.
 
 ## IB Computer Science
 
-*7 syllabus points · 15 card references*
+*9 syllabus points · 17 card references*
 
 | Syllabus point | Cards |
 |---|---|
@@ -604,6 +611,8 @@ is often taught under a different heading.
 | B2.2 | [[Arrays]] |
 | B2.4 | [[Big-O Notation]], [[Recursion]], [[Searching]], [[Sorting]] |
 | B2.5 | [[File Handling]] |
+| B3.1 | [[Object-Oriented Programming]] |
+| B3.2 | [[Object-Oriented Programming]] |
 
 ## IB Physics
 

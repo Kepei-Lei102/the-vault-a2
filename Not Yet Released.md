@@ -3,8 +3,8 @@
 > These cards **exist** and are written. They are simply not part of your
 > course yet — they arrive as we reach them.
 
-> **Edition** `student-2026-08-31` · built 2026-09-01 from commit `cf4f034` + uncommitted changes  
-> 359 cards · 446 diagrams · 74 explainers · 107 illustrations
+> **Edition** `student-2026-09-02` · built 2026-09-04 from commit `47b4330` + uncommitted changes  
+> 366 cards · 455 diagrams · 75 explainers · 110 illustrations
 
 ---
 
@@ -29,3 +29,6 @@ the agent reading this vault knows the difference.
 - Graphs
 - Half-Adder and Full-Adder
 - Hash Tables
+- NoSQL and Distributed Data
+- Relational Databases
+- SQL

@@ -4,6 +4,7 @@ prerequisites:
   - "[[Input and Output Devices]]"
 leads_to:
   - "[[Embedded Systems]]"
+  - "[[Decouple and Recouple]]"
 tags:
   - subject/computer-science
   - domain/computer-architecture
