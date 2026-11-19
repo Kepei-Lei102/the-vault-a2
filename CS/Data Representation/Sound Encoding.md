@@ -1,12 +1,14 @@
 ---
 chinese: 声音编码 (shēngyīn biānmǎ)
 prerequisites:
+  - "[[Progressive Waves]]"
   - "[[Number Bases]]"
   - "[[Text Encoding]]"
   - "[[Storage Units (Vocab)]]"
   - "[[One Take, Many Tracks]]"
   - "[[The Loudness War]]"
 leads_to:
+  - "[[Digital Audio Workstation]]"
   - "[[Compression]]"
 tags:
   - subject/computer-science
@@ -15,6 +17,7 @@ tags:
   - level/A-Level
   - curriculum/Cambridge-0478
   - curriculum/Cambridge-9618
+  - curriculum/IB-CS
   - syllabus/0478-1-2
   - syllabus/9618-1-2
   - type/deep
@@ -32,13 +35,7 @@ Here is the strangest number in your pocket: **44,100**. Every CD, and most musi
 
 ## 中文锚点
 
-**声音编码 (shēngyīn biānmǎ)** = sound encoding：把连续的声波变成一串数字——
-
-- **模拟 (analogue)** vs **数字 (digital)**：声音本身是*连续*的气压波（麦克风把它变成连续电压）；计算机只能存*离散*的数字，所以必须**测量**。
-- **采样 (sampling)**：每隔固定时间量一次波形的**振幅**（高度）。**采样率 (sample / sampling rate)** = 每秒采样次数（单位 Hz）；CD 是 $44{,}100$ Hz。
-- **采样精度 (sample / sampling resolution)** = 每个样本用几位二进制存（CD 是 $16$ 位）——决定振幅量得多准；量不准的误差叫**量化误差 (quantisation error)**。
-- **奈奎斯特定理 (Nyquist)**：采样率只要**超过最高频率的两倍**，低于该频率的波形就*一点不丢*——所以 $2 \times 20\text{kHz（人耳上限）} < 44.1$ kHz。
-- 文件大小 = 采样率 × 采样精度 × 声道数 × 时长。与图像完全平行：图像在**空间**采样，声音在**时间**采样。
+发一条语音消息，手机里并没有装进去一口气，也没有藏着一个小小的你。麦克风先把说话时空气的起伏变成电压，手机再按固定的节拍飞快地量它，每次记下一个精度有限的数。收听时，扬声器照着这串数振动，又让另一处的空气起伏起来。声音编码留下的是“怎样起伏”的记录，所以你的声音能跨过距离，在别人耳边重新响起。
 
 ---
 
@@ -69,7 +66,7 @@ Here intuition is beautifully, provably wrong. The **Nyquist–Shannon sampling 
 
 > If a signal contains no frequency above $f$, then sampling at any rate **greater than $2f$** captures it *perfectly*. Not approximately — the smooth wave can be rebuilt **exactly** from the dots.
 
-Why $2$? A sine wave is pinned down by hitting it at least twice per cycle — once to catch it up, once down. Sample slower than that and something worse than blur happens: the samples fit a *different, slower* sine wave equally well, and the reconstruction confidently produces **the wrong sound**. That impostor is called **aliasing**:
+Why the factor $2$? Frequencies separated by the sample rate can produce identical sample sequences. Keeping the whole positive and negative frequency band within half the sample rate prevents those shifted copies from overlapping. Exactly two samples per cycle are not enough in general: sampling a sine at every zero crossing records only zeros. Below the required rate, the samples fit a different sine wave equally well, and the reconstruction confidently produces **the wrong sound**. That impostor is called **aliasing**:
 
 ![[sound-encoding-aliasing.svg|697]]
 
@@ -84,7 +81,7 @@ You have seen aliasing your whole life: wheels in films spinning slowly backward
 ![[sound-encoding-demo-8khz.m4a]]
 
 > [!warning] The staircase myth
-> Diagrams (including the one above) draw digital audio as dots or steps, so almost everyone believes digital sound *is* a staircase — jagged, missing the "smoothness between the samples." It is not. The reconstruction at playback produces a **smooth wave**, and below the Nyquist limit it is *the* wave, exactly. Digital audio done right does not approximate the analogue signal in the audible band — it equals it. (What is genuinely lost lives in the *other* dial.)
+> Diagrams (including the one above) draw digital audio as dots or steps, so almost everyone believes digital sound *is* a staircase — jagged, missing the "smoothness between the samples." It is not. The reconstruction at playback produces a **smooth wave**, and below the Nyquist limit it is *the* wave, exactly. Exact reconstruction is the ideal theorem for an exactly band-limited signal with exact samples and ideal reconstruction. Real converters also have quantisation, noise and non-ideal filters; the theorem explains why the gaps between samples alone do not force a staircase output.
 
 ---
 
@@ -125,7 +122,7 @@ CD-quality stereo runs $44{,}100 \times 16 \times 2 = 1{,}411{,}200$ bits per se
 
 **Example 1 — choose a sample rate.** Telephone speech only needs frequencies up to about $3.4$ kHz to stay intelligible. Nyquist: rate $> 2 \times 3400 = 6800$ Hz — and real telephone networks standardised on $8{,}000$ Hz, a comfortable margin. (This is why music on hold sounds so thin: everything above $4$ kHz never crosses the line.)
 
-**Example 2 — effects of changes.** A recording's sample rate rises from $40$ kHz to $60$ kHz: accuracy **increases** (samples closer together — smaller gaps in the wave, smaller quantisation-in-time error) and file size increases proportionally. The recording's *duration* doubles: file size doubles, accuracy **unchanged** (the dials didn't move). Resolution drops $24 \to 16$ bits: file size falls by a third, accuracy **decreases** — fewer amplitude values available, larger quantisation errors.
+**Example 2 — effects of changes.** A recording's sample rate rises from $40$ kHz to $60$ kHz: the samples lie closer together, the highest frequency that can be captured without aliasing rises, and file size increases proportionally. This can improve fidelity when the source contains those higher frequencies; it does not reduce amplitude quantisation error or automatically improve an already adequately sampled, band-limited signal. The recording's *duration* doubles: file size doubles, accuracy **unchanged** (the dials didn't move). Resolution drops $24 \to 16$ bits: file size falls by a third, accuracy **decreases** — fewer amplitude values available, larger quantisation errors.
 
 **Example 3 — file size with unit discipline.** $44{,}100$ Hz, $16$-bit, stereo, $30$ s: $44{,}100 \times 16 \times 2 \times 30 = 42{,}336{,}000$ bits $= 5{,}292{,}000$ B $\approx 5.05$ MiB. Bits first, bytes next, ladder last.
 
@@ -135,11 +132,11 @@ CD-quality stereo runs $44{,}100 \times 16 \times 2 = 1{,}411{,}200$ bits per se
 
 ## Exam Notes
 
-### Cambridge 0478 (IGCSE)
+### Cambridge 0478 (IGCSE — Paper 1)
 
 **§1.2.2 — sound representation.** The three definitions, in the mark schemes' own shape: **sampling** — measuring the height/**amplitude** of the sound wave at regular time intervals; **sample rate** — the number of samples taken per second; **sample resolution** — the number of bits per sample. Expect "describe how sound is converted to digital" (microphone → wave sampled at set rate → each amplitude stored as binary at set resolution) and the benefits/drawbacks of raising either dial (closer to original vs bigger file).
 
-### Cambridge 9618 (A-Level)
+### Cambridge 9618 (AS — Paper 1)
 
 **§1.2 Sound.** Same machinery with sharper language: the terms appear as **sampling rate / sampling resolution** (the *sample-*/*sampling-* prefix varies freely across papers — the definitions never do), plus **analogue vs digital** explicitly, and the effects of changing each dial on **file size and accuracy** — two separate axes, and questions ask about one at a time.
 
@@ -152,9 +149,13 @@ CD-quality stereo runs $44{,}100 \times 16 \times 2 = 1{,}411{,}200$ bits per se
 
 ### IB CS (2027)
 
-Sound representation is **not a named statement**: A1.2's published wording stops at binary/hexadecimal conversion and logic gates processing encoded data — sampling, sample rate and resolution are not listed. Treat this card as depth behind "encoded data", not examinable IB content.
+**A1.2.2 — binary storage of data (SL and HL).** The full first-assessment-2027 guide, printed p.29, explicitly includes mechanisms for storing **audio**, as well as images, video, integers, strings and characters. Use sampled amplitudes encoded as binary numbers to explain the mechanism. The guide does not separately list Cambridge’s rate/resolution definitions or its file-size calculation forms; these support understanding but should not be represented as separately named IB outcomes.
 
 ---
+
+### Not examined on AP Computer Science A
+
+The Fall 2025 CED does not prescribe audio sampling or sample-resolution/file-size calculations as course content. A program may process numbers representing media, but that does not make the media-encoding theory a named CSA requirement.
 
 ## Connections
 
@@ -164,8 +165,8 @@ Sound representation is **not a named statement**: A1.2's published wording stop
 - **Sibling:** [[Image Encoding]] — the same two dials in space instead of time; aliasing ↔ moiré; sample resolution ↔ colour depth. Read the two cards as one idea, sampled twice.
 - **Sequel:** [[Compression]] — sound is where compression gets *perceptual*: MP3 discards real data your ear masks anyway, the boldest version of "remove what won't be noticed."
 - **Cross-domain:** [[Information Theory]] — Shannon of Nyquist–Shannon; the sampling theorem is the bridge between continuous physics and discrete bits, and bits-per-second here is literally his channel currency. [[Floating-Point Representation]] — quantisation error *is* rounding error, caught at the microphone instead of the ALU.
-- **Physics:** [[Waves I: The Wave Equation]] and [[Sound Waves]] — amplitude, frequency, superposition: the physical thing every sample measures. The microphone's diaphragm is doing mechanics before the ADC does mathematics.
-- **Mathematics:** [[Fourier Series]] — the theorem beneath the theorem: *every* wave decomposes into pure sines, which is why "contains no frequency above $f$" is even a meaningful sentence, and why Nyquist can promise perfection below it. [[Logarithms]] — the decibel is a log scale, which is why each bit of resolution adds a constant $6$ dB.
+- **Physics:** [[Progressive Waves]] and [[Sound Waves]] — amplitude, frequency, superposition: the physical thing every sample measures. The microphone's diaphragm is doing mechanics before the ADC does mathematics.
+- **Mathematics:** [[Fourier Series]] — periodic waveforms described by harmonic coefficients, with explicit convergence conditions. [[Fourier Transform]] extends the frequency description used in sampling theory. [[Logarithms]] explains the decibel scale and the roughly 6 dB change in quantisation signal-to-noise ratio per additional bit under the usual ideal model.
 - **Story:** [[Stories/One Take, Many Tracks]] — a century of studios fighting for what these numbers finally delivered: random access to time. Wax discs allowed no mistakes; tape met the razor blade; Les Paul stacked a dozen guitars on parallel tracks; digital made every edit a reversible pointer. The reason samples-are-numbers mattered, told through the people who needed it.
 
 ---

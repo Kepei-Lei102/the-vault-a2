@@ -6,6 +6,7 @@ prerequisites:
 leads_to:
   - "[[File Systems]]"
   - "[[Hash Tables]]"
+  - "[[File Processing and Exception Handling]]"
   - "[[Relational Databases]]"
 tags:
   - subject/computer-science
@@ -35,7 +36,9 @@ tags:
 
 ## 中文锚点
 
-游戏打了三小时不存档，关机——全没了。变量就是这样活着的：它们住在内存里，像写在教室黑板上的字，程序一退出、电一断，黑板就被擦得干干净净。**文件就是存档**：把数据誊进磁盘这本"笔记本"，它就**活得比程序久**（持久化），明天开机还在。和笔记本打交道有一套完整的礼节：**打开**（跟系统借到本子），读或写（**文件指针**是你的书签，记着读到哪儿），**关闭**（合上、还回去）。读到最后一页再没有字，那是**文件结束**——一个"到头了"的**状态**，不是藏在末尾的某个特殊字符，循环拿它当停止信号。最要紧的礼节藏在"关闭"里：你写的字不会立刻落到磁盘上，而是先攒在内存的**缓冲区**里，攒够一批才真正誊过去——合上本子那一刻，没誊完的才被全部誊清。这也是 U 盘要"安全弹出"的全部道理：直接拔，缓冲区里没誊完的字就永远丢在半路了。写的方式还分两种脾气：**写模式**翻开就把旧内容整本撕掉从头来，**追加模式**只在末尾续写——考卷年年爱考你分清这两位，分不清的代价是整个文件。
+昨晚退出游戏，今天再打开，角色还站在那个村口。并不是游戏在你关机后还偷偷运行，而是它把位置、背包和进度写进了存档，再次启动时照着记录恢复现场。内存帮程序记住眼前正在发生的事；保存在持久存储里的文件，让选定的信息能留到程序结束以后。程序得自己决定哪些东西值得留下，又该怎样读回来——“存档”按钮背后，就是这份把现在交给下一次的约定。
+
+## Vocabulary
 
 | English | 中文 | one-line meaning |
 |---|---|---|
@@ -153,11 +156,11 @@ with open("log.txt", "a") as f:   # log.txt is intact; new lines go at the end.
 
 Nothing above describes how a real application behaves, and the mismatch is worth naming rather than leaving as a puzzle. A note-taking app appears to save on every keystroke. It plainly is not opening and closing a file a thousand times, and it is certainly not rewriting the whole document each time you press a key.
 
-Start by tightening one sentence from earlier, because it is easy to over-read. **Flushing is what makes writing real; `close` is simply one thing that triggers a flush** — the last one, and the one you can forget. A program that intends to keep going just flushes when it wants durability and keeps the file open for hours. Open and close are not the unit of saving; they bracket a *connection*.
+Start by tightening one sentence from earlier, because it is easy to over-read. **Flushing pushes a language-level buffer onward; `close` is one operation that triggers it.** The OS and device may still buffer those bytes. A long-running program can keep the connection open while flushing and requesting storage synchronisation when it needs durability; a Python `flush()` alone is not that guarantee. Open and close are not the unit of saving; they bracket a *connection*.
 
 Three mechanisms do the actual work, and each answers a different part of the question.
 
-**1. Write somewhere else, then swap the name.** The standard way to save a document is not to overwrite it. Write the new version to a **temporary file**, flush it all the way to the disk, then `rename` the temporary file over the original. Renaming is *atomic*: at every instant the name refers to one complete file or the other, never to a half-written one. This is what makes "save" survive a power cut — and it is the professional answer to the write-mode trap above, since the original is never opened for writing at all. (The subtlety, for the same reason: the rename itself has to be flushed, or a crash can leave the old name pointing at the old data.)
+**1. Write somewhere else, then swap the name.** The standard way to save a document is not to overwrite it. Write the new version to a **temporary file**, flush it all the way to the disk, then `rename` the temporary file over the original. Renaming is *atomic*: at every instant the name refers to one complete file or the other, never to a half-written one. This avoids exposing a half-written replacement and answers the write-mode trap above. Power-loss durability additionally requires synchronising the directory change on systems that require it and a storage stack that honours the flushes. The example below demonstrates atomic replacement on a supporting local file system; it does not implement the final directory-synchronisation step.
 
 ```python
 import os, tempfile
@@ -175,7 +178,7 @@ def save_atomically(path, text):
 
 **3. Let something else worry about it.** Most apps that appear to save instantly are not managing files at all — they are writing rows to an embedded database, overwhelmingly **SQLite**, which does the journalling, the atomic replace and the crash recovery internally. The application says *store this note*; the durability problem has been solved once, by people who specialise in it, rather than badly in every app.
 
-And the honest tail: **"saved" in a user interface is a claim about the application's buffer, not about the disk.** The data may still be in the program's buffer, then the operating system's cache, then the drive's own cache. Only an explicit flush-to-disk makes it a fact — which is the same promise-versus-fact distinction the whole topic runs on.
+And the honest tail: **"Saved" in a user interface is an application-specific promise.** Data can pass through the program’s buffer, the OS cache and the drive’s cache; durable saving needs the appropriate synchronisation protocol and hardware support. [[File Systems]] separates atomic visibility from survival after power loss.
 
 ## Text and binary are the same thing
 
@@ -352,10 +355,10 @@ The most consequential one, because it survives into professional work and fails
 
 ### Where this is *not* examined
 
-**AP Computer Science A has no file I/O at all** — input arrives only through `Scanner`, and no free-response question can require reading a file. Buffering, flushing, encodings and line-ending conventions are examined on none of the four boards; they are here because they explain the rules that are.
+**AP Computer Science A examines reading a text file, and only reading.** Topic 4.6 of the course effective Fall 2025, *Using Text Files*, asks for Java that opens a file with `File` and `Scanner`, declares `throws IOException`, loops while `hasNext()`, reads with `nextInt`, `nextDouble`, `nextLine` or `next`, splits a line with `String.split`, and closes the scanner. Writing and appending files are not in that course, and keyboard input is excluded. The lifecycle and the read-until-the-end loop on this card are the same idea in Python. Buffering, flushing, encodings and line-ending conventions are examined on none of the four boards; they are here because they explain the rules that are.
 
 > [!info] Beyond syllabus — why "written" still doesn't mean "safe"
-> `close` empties your program's buffer into the operating system. The operating system then has a buffer of its own, and the drive has one after that. A power cut in between can still lose data that every layer reported as written. Programs that genuinely cannot afford this — databases, above all — call `fsync`, which asks the whole chain to commit before returning, and pay for it in speed. It is the same trade the whole topic runs on: buffering is fast because it is a promise about the future, and a promise is not a fact. The database's answer to *how do I keep a promise across a crash* is the transaction log, which is why **Relational Databases** *(not yet released)* exist as something other than a tidy file format.
+> `close` empties your program's buffer into the operating system. The operating system then has a buffer of its own, and the drive has one after that. A power cut in between can still lose data that every layer reported as written. Programs that genuinely cannot afford this — databases, above all — call `fsync`, which asks the whole chain to commit before returning, and pay for it in speed. It is the same trade the whole topic runs on: buffering is fast because it is a promise about the future, and a promise is not a fact. The database's answer to *how do I keep a promise across a crash* is the transaction log, which is why [[Relational Databases]] exist as something other than a tidy file format.
 
 > [!info] Beyond syllabus — the formats that solved this once
 > Nobody hand-rolls serialisation any more, and the reason is that the three strategies above were argued to a conclusion decades ago. **CSV** is the delimiter approach with a quoting rule bolted on; **JSON** carries the structure explicitly, so nesting works and no field can be mistaken for a separator; **binary formats** like Parquet or protobuf use length prefixes for exactly the reason given above. Reading a modern format's specification is a good way to watch those three options being weighed by people who had to live with the answer.
@@ -367,7 +370,7 @@ The most consequential one, because it survives into professional work and fails
 - **Uses:** [[Stacks and Queues]] — the MOD ring, reused as a sliding window over a stream too long to hold; [[Text Encoding]] — the agreement that makes bytes into text.
 - **Managed by:** [[Operating Systems]] — the directory entry that turns a name into blocks *and records the length EOF is measured against*, the permissions checked at `open`, and the atomic `rename` that makes a real save survive a crash.
 - **The idea underneath:** in-band versus out-of-band framing. A file's boundaries live outside it in the directory; a network packet's live inside it in a header, because the wire keeps no index. The same choice reappears inside a single file as delimiter-versus-length-prefix — and reappears again as the difference between a self-describing format and one that needs a schema.
-- **Extends into:** [[File Systems]] — how those blocks are organised and found, and the serial / sequential / random access methods; **Relational Databases** *(not yet released)* — what you reach for when files stop being enough.
+- **Extends into:** [[File Systems]] — how those blocks are organised and found, and the serial / sequential / random access methods; [[Relational Databases]] — what you reach for when files stop being enough.
 - **Exam dialect:** [[Cambridge Pseudocode]] — `OPENFILE`, `READFILE`, `WRITEFILE`, `EOF`, `CLOSEFILE`, and the undefined `FILE` type.
 
 ---

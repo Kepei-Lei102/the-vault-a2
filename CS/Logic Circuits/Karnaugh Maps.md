@@ -14,7 +14,6 @@ tags:
   - domain/digital-circuits
   - level/A-Level
   - curriculum/Cambridge-9618
-  - curriculum/A-Level
   - syllabus/9618-15-2
   - type/deep
   - type/visual-tool
@@ -38,7 +37,9 @@ Invented by Maurice Karnaugh at Bell Labs in 1953, it is the workhorse of hand-m
 
 ### 中文锚点
 
-**卡诺图 (kǎnuò tú)** = 把真值表重画成一张方格图，格子的排列保证**相邻两格只有一个变量不同**。于是[[Boolean Algebra|布尔代数]]里"两项合并、消去一个变量"这一步，变成了肉眼可见的操作：**把相邻的 1 圈起来**。
+看看飞镖靶上的数字是怎么排的：20 夹在 1 和 5 中间，19 夹在 3 和 7 中间。这个顺序是故意的，每个大数的两边都是小数，飞镖稍微一偏没扎中 20，落点就没几分了。卡诺图也是一张方格，格子的顺序同样是故意排出来的，只是用意正好相反：行和列的排法保证任何两个相邻的格子，包括跨过边缘相邻的，恰好只有一个输入不同。现在把真值表里的 1 填进格子。只要两个 1 挨在一起，它们之间那个不一样的输入就不可能起过作用，因为不管它取 0 还是 1，输出都是 1，于是这个输入可以划掉。四个连成一块的 1，能划掉两个输入。在纸上化简一个布尔表达式很容易出错，到了这里就变成了一个游戏：把 1 圈进尽可能大的矩形里，圈出来的矩形就是化简后的表达式。
+
+#### 术语对照 (Terms)
 
 | English | 中文 | 一句话 |
 |---|---|---|
@@ -48,8 +49,6 @@ Invented by Maurice Karnaugh at Bell Labs in 1953, it is the workhorse of hand-m
 | minterm | 最小项 | 真值表里输出为 1 的那一格 |
 | don't-care | 无关项 (记作 X/×) | 可当 0 也可当 1，哪个方便用哪个 |
 | adjacency | 相邻 | 只差一位 → 可以合并消元 |
-
-中文数字逻辑课就叫"卡诺图化简"，考点和 9618 §15.2 完全一致：**画图、圈最大组、写出最简与或式**。
 
 ---
 
@@ -74,7 +73,7 @@ The magic is entirely in the **ordering of the axis labels**. You do *not* count
 Two consequences of that ordering, both load-bearing:
 
 - **Every edge is a one-variable step.** Horizontal neighbour, vertical neighbour — always exactly one input flips. That is what makes a loop legal.
-- **The map has no true edges — opposite sides wrap.** The **leftmost and rightmost columns are neighbours**: in the 3-variable map, columns $00$ and $10$ differ in exactly one bit, so a loop can run *off the right edge and reappear on the left*. The **top and bottom rows** wrap the same way. This is the single most-missed adjacency in §15.2 — a pair split across the left and right edges is exactly as legal as a pair in the middle, and in a 4-variable map **all four corners are mutually adjacent** and can be looped as one group of four.
+- **The map has no true edges — opposite sides wrap.** The **leftmost and rightmost columns are neighbours**: in the 3-variable map, columns $00$ and $10$ differ in exactly one bit, so a loop can run *off the right edge and reappear on the left*. The **top and bottom rows** wrap the same way. This is the single most-missed adjacency in §15.2 — a pair split across the left and right edges is exactly as legal as a pair in the middle, and in a 4-variable map **the four corners form a wrapping 2 × 2 group** and can be looped together; diagonally opposite corners still differ in two variables.
 
 > [!tip] Roll the map into a closed surface
 > The flat rectangle is just how the map is *printed* — its edges are an illusion. Roll it so the **left edge meets the right edge** and you get a **cylinder**: the horizontal wrap is now physical, and there is no left or right side any more, so a group straddling those columns is obviously fine. For a 4-variable map, curl that cylinder around so its **top rim meets its bottom rim**, and the tube closes into a **torus** (a donut) — on which there are *no edges at all*, every cell has four honest neighbours, and "adjacency" is simply "touching." The instinct to picture a seamless, edgeless ball is exactly the right instinct; the precise shape is a donut rather than a sphere, only because opposite edges join *straight across* instead of pinching to a point. Either way, the lesson is the same: **there is no such thing as an outer edge on a Karnaugh map.**
@@ -161,20 +160,17 @@ And that selection is the catch flagged in [[Boolean Algebra]]: choosing the sma
 
 ## Exam Notes
 
-### Cambridge 9618 (A Level, §15.2)
-Directly examined, for **2-, 3-, and 4-variable** maps. Expect: fill a K-map from a truth table or a Boolean expression; loop it; write the **minimal sum-of-products**; and sometimes handle **don't-care** conditions. Marks are for *maximal* groups (a non-minimal but correct expression is penalised) and for covering every 1. Gray-code axis ordering and wrap-around adjacency are the two things most often slipped. Pairs with algebraic simplification ([[Boolean Algebra]]) — the map is faster, the algebra is the justification.
+### Cambridge 9618 (A Level), §15.2
 
-### Cambridge 0478 (IGCSE)
-Not examined — IGCSE stops at gates and truth tables ([[Logic Gates]]). Karnaugh maps are an A-Level escalation.
+"Show understanding of Karnaugh maps (K-map)": "Understand the benefits of using Karnaugh maps" and "Solve logic problems using Karnaugh maps". In practice: fill a 2-, 3- or 4-variable map from a truth table or expression, loop it, and write the minimal sum of products; marks are for maximal loops and the correct minimal expression, and don't-care conditions appear in the harder questions. The same row carries Boolean algebra ([[Boolean Algebra]]), adders and flip-flops.
 
-### Other A-Level boards (AQA / OCR / Edexcel)
-All examine K-maps up to four variables, essentially identically; some also want Quine–McCluskey by name.
+### IB Computer Science (2027 guide), A1.2.4
 
-### AP
-Neither AP CSA nor AP CSP covers circuit minimisation. This is a Cambridge/UK-A-Level and first-year-university (digital logic) topic.
+"Construct and analyse truth tables" lists "Karnaugh maps and algebraic simplification to simplify output expressions". Examined by name, at the same size as 9618.
 
-### IB Computer Science
-Not examined: A1.2 stops at gates and truth tables, and no IB statement asks for minimisation. For an IB student this card is pure enrichment — the systematic tool behind the "simplify this circuit" instinct.
+### Where this is *not* examined, and what is unverified
+
+Cambridge 0478 stops at gates and truth tables drawn "without simplification". AP Computer Science A has no circuit minimisation; the AP Computer Science Principles description is not on file. The domestic UK A-level boards named in an earlier version are not on file and their Quine–McCluskey mention is withdrawn as unverified.
 
 ---
 

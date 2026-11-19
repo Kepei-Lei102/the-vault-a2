@@ -5,9 +5,12 @@ prerequisites:
   - "[[Cambridge Pseudocode]]"
   - "[[Program Design]]"
   - "[[A Rich Neighbor Named Xerox]]"
+  - "[[Program Development Life Cycle and Testing]]"
 leads_to:
-  - "[[Declarative Programming]]"
+  - "[[Java Classes]]"
+  - "[[Programming Paradigms]]"
   - "[[Dual-Core Craft]]"
+  - "[[Java Objects, References and Strings]]"
 tags:
   - subject/computer-science
   - domain/programming
@@ -52,7 +55,9 @@ Four more words name what classes let you *do*:
 
 ### 中文锚点
 
-打开《英雄联盟》(League of Legends)，选一个英雄。每个英雄都有**属性**（生命值、攻击力、法强、移速）和**技能**（Q、W、E，还有大招 R）——一个英雄就是**一个对象**：数据和能对这份数据做的操作，绑在一起。所有英雄共有的那份"说明书"——有哪些属性、哪些技能——就是**类**；你锁定、正在操控的那个，是类的**一个实例**，由**构造器**在读条结束、进入峡谷的那一刻造出来。你不能直接改生命值（那是外挂），只能通过"受到伤害""回复"这些方法去改——这就是**封装**：数据藏在里面，只留方法在外面（**getter** 读，**setter** 改）。法师、射手、坦克都是英雄，各自还会多出一些自己的属性——**继承**：射手*是一个*英雄（is-a）。每个英雄都有 R 这个技能位，按下去实际触发的效果却各不相同——**多态**：同一个调用，由对象自己决定做什么，画技能栏的代码从来不需要知道你选了谁。一支队伍*拥有*五个英雄（has-a）——那不是继承，是**包含**。这张卡把这九个词在真实的 Python 里各造一遍，再用两道真的 Paper 4 原题（动物园的动物类、车站与火车的包含关系）走一遍考试要你写的每一行；理论卷 Paper 3 考的是把词和定义连线——连线题的九个词，就是上面这九个。
+想象你在写一个游戏，场上站着两个长得一模一样的英雄。一个挨了打，另一个的血条当然不该跟着掉。写程序时，就可以让每个英雄把自己的生命值和“受伤”“回血”这些操作放在一起：叫谁受伤，就由谁去改自己的状态。这样的一个整体，就是一个对象。数据不再是散落在各处、分不清属于谁的数字，而是跟着具体的那个角色走。
+
+## Key Vocabulary
 
 | English | 中文 | 一句话 |
 |---|---|---|
@@ -278,7 +283,7 @@ The containment code above is the answer, and the scheme's prices: the private a
 
 ## Where this is the working tool
 
-You have been using objects since your first line of Python: `"hello".upper()` is a method on a string object, `list.append` a method on a list, and every card in the Data Structures bay — [[Linked List]], [[Stacks and Queues]], **Binary Trees** *(not yet released)*, **Hash Tables** *(not yet released)* — is a class whose private attributes are the structure and whose methods are the only operations allowed on it. That is encapsulation doing real work: a stack that cannot be popped when empty, because `pop()` checks and nothing else can reach the array.
+You have been using objects since your first line of Python: `"hello".upper()` is a method on a string object, `list.append` a method on a list, and every card in the Data Structures bay — [[Linked List]], [[Stacks and Queues]], [[Binary Trees]], [[Hash Tables]] — is a class whose private attributes are the structure and whose methods are the only operations allowed on it. That is encapsulation doing real work: a stack that cannot be popped when empty, because `pop()` checks and nothing else can reach the array.
 
 Beyond the vault, nearly every large program is organised this way. A web framework's `Order` model is a class with validated setters; a game engine hands you a base class (`GameObject`, `MonoBehaviour`) and every enemy, coin and door *inherits* from it and overrides `update()` — the polymorphism loop, running sixty times a second over thousands of objects; a graphical toolkit's `Button` inherits from `Widget` so that one `draw()` loop paints a whole window. When you read documentation for any library, you are reading class diagrams in prose.
 
@@ -300,7 +305,7 @@ The class is the description; the object is the thing. `Animal` cannot make a so
 
 ### 4. Polymorphism confused with overloading
 
-Overloading (VB's `Overloads`, Java's same-name-different-parameters) is several methods with one name in *one* class. Polymorphism is one method name across a *family* of classes, chosen by the object's type at run time. Python has no overloading at all; it has polymorphism everywhere. **Fix:** the exam word is *override*, and the test is "does a call on the parent type run the child's code?"
+Overloading (VB's `Overloads`, Java's same-name-different-parameters) is several methods with one name in *one* class. The polymorphism this card teaches, and the only kind Cambridge means by the word, is one method name across a *family* of classes, chosen by the object's type at run time. Python has no overloading at all; it has that polymorphism everywhere. **Fix:** on a Cambridge paper the exam word is *override*, and the test is "does a call on the parent type run the child's code?" IB uses a wider vocabulary: it asks for *dynamic* polymorphic behaviour, which is overriding, settled while the program runs, and also for *static* polymorphic behaviour, of which overloading is the standard example, settled when the program is compiled. An IB student should be able to name both and say which is which.
 
 ### 5. "Private means nobody can touch it" (in Python)
 
@@ -351,8 +356,8 @@ Python's loop over `zoo` never checked that every element was an `Animal`; it ch
 
 ### AP Computer Science A (Fall 2025 framework — Java)
 
-- Unit 1.12 (objects as instances of classes) and **Unit 3, Class Creation** (§3.1 abstraction and class diagrams, §3.3 anatomy of a class with `private`/`public`, §3.4 constructors and `this`, §3.5 writing methods, §3.6 passing objects — the aliasing the Account example shows, §3.7 static members, §3.8 scope). The Java specimen above is the shape of the Class Design free-response question.
-- **Inheritance and polymorphism are not in the Fall 2025 course** — the redesign stripped them, with interfaces and abstract classes. An AP student needs this card's first half in Java and can read the second half as enrichment.
+- Unit 1.12 (objects as instances of classes) and **Unit 3, Class Creation** (§3.1 abstraction and program design, §3.3 anatomy of a class with `private`/`public`, §3.4 constructors, §3.5 writing methods, §3.6 passing and returning object references, §3.7 class (`static`) variables and methods, §3.8 scope and access, §3.9 `this`). The Class Design free-response question asks for one complete class written from a specification: private instance variables, a public constructor and public methods. The Java specimen above is a Cambridge mark-scheme subclass that uses `extends`, `super` and public fields, so it is not a model for that question.
+- **Inheritance is in the Fall 2025 course as vocabulary, not as code.** §1.12 expects a student to know what a superclass and a subclass are, and that every Java class is a subclass of `Object`. Designing and implementing an inheritance relationship is outside the course, overriding `toString` and `equals` is outside it, and no learning objective asks for polymorphism, interfaces or abstract classes. An AP student needs this card's first half in Java and can read the second half as enrichment.
 
 ### IB Computer Science (B3)
 
@@ -386,10 +391,10 @@ Python's loop over `zoo` never checked that every element was an `Animal`; it ch
    - [[Program Design]] — the design step; a class diagram is the fourth design notation.
 
 - **Children:**
-   - [[Declarative Programming]] — the fourth paradigm of §20.1: facts and rules instead of objects and methods.
+   - [[Programming Paradigms]] — the four paradigms of §20.1 side by side, the declarative quarter (facts, rules, goals) run on a small Prolog engine.
    - [[Dual-Core Craft]] — where inheritance trees broke under real-time load and entity–component–system (ECS) replaced them; this card's Beyond explains ECS as OOP's deliberate inverse, and why the vault itself is built on it.
 
-- **The bay that is already OOP:** [[Stacks and Queues]], [[Linked List]], **Binary Trees** *(not yet released)*, **Hash Tables** *(not yet released)*, **Graphs** *(not yet released)* — every structure a class, every operation a method, every invariant guarded by encapsulation.
+- **The bay that is already OOP:** [[Stacks and Queues]], [[Linked List]], [[Binary Trees]], [[Hash Tables]], [[Graphs]] — every structure a class, every operation a method, every invariant guarded by encapsulation.
 - **History:** [[A Rich Neighbor Named Xerox]] — Smalltalk on the Alto, the thing Jobs was too dazzled to see; [[Assembly Language]] — the low-level paradigm at the other end of the same syllabus row.
 
 - **Misconception traps cleared:** class ≠ object; `self` and `super().__init__` are not optional; is-a is a test, not a convenience; override ≠ overload; Python's private is a convention; attributes must be declared in comments on the exam.

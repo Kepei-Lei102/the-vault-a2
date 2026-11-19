@@ -3,6 +3,7 @@ chinese: 哥德尔不完备定理 (Gēdé'ěr bù wánbèi dìnglǐ)
 prerequisites:
   - "[[Turing Machine]]"
   - "[[Russell's Paradox in the Post]]"
+  - "[[Hilbert vs Brouwer]]"
 leads_to:
   - "[[The Love of Wisdom]]"
 tags:
@@ -20,6 +21,7 @@ tags:
   - misconception/godel-means-math-is-broken
   - misconception/godel-applies-to-everything
   - misconception/godel-proves-minds-beat-machines
+  - level/enrichment
 ---
 
 # Gödel's Incompleteness Theorems 哥德尔不完备定理
@@ -39,14 +41,19 @@ It was a magnificent, optimistic vision: mathematics as a closed machine that, g
 
 ## 中文锚点
 
-**哥德尔不完备定理**（1931）粉碎了希尔伯特的梦想——用一套有限公理证明出**所有**数学真理。它有两条：
+小孩子爱玩一句话：“我现在说的这句话是假的。”它要是真的，那它就是假的；它要是假的，那它又成了真的。大家笑一笑就过去了，因为这只是一个文字把戏。1931 年，哥德尔只改了一个词。他的那句话是：“这句话无法被证明。”这一下就不是把戏了。假如这句话能被证明，那这套规则就证出了一句假话，而能证出假话的规则一文不值。所以只要规则是靠得住的，这句话就证不出来，而这恰恰就是它自己说的内容：它是真的，规则却永远够不着它。他真正费力的地方，是证明普通的算术已经丰富到足以写出这样一句谈论自己的话，办法是给每个公式编一个号，这样一来，关于数的命题同时也可以是关于公式的命题。结论并不是数学垮了，而是：任何一本关于算术的规则书，不管写得多长，总有一些真话落在它外面。
 
-- **第一不完备定理**：任何**一致的**（不自相矛盾）、**能表达算术**的、公理可机械列举的形式系统，都是**不完备的**——存在**真但无法在系统内证明**的命题。
-- **第二不完备定理**：这样的系统**无法证明自身的一致性**。
+### 术语对照 (Terms)
 
-**机制**：**哥德尔编码**把每个符号、公式、证明都编成一个数（"命题即数据"，正是 [[Turing Machine|图灵机]] 通用机的逻辑）。于是"可证性"变成一个**算术谓词**，系统能谈论自己。再构造一句自指命题 **G**：*"G 在本系统内不可证。"* 若 G 可证，则系统证出一句假命题（不一致）；故若系统一致，G **为真却不可证**——**真理超出可证性**。
-
-它**不是**说"数学崩塌了"或"什么都证不了"；它只说：没有任何**单一**系统能证明关于算术的**全部**真理。与 [[Turing Machine|停机问题]] 是同一把"对角线"利刃的两面。
+| English | 中文 | one-line meaning |
+|---|---|---|
+| incompleteness | 不完备性 | some true statements cannot be proved inside the system |
+| consistent | 一致的（不自相矛盾） | the system never proves both a statement and its negation |
+| formal system | 形式系统 | axioms plus rules, mechanical enough for a machine to check |
+| provable | 可证的 | reachable from the axioms by the rules |
+| Gödel numbering | 哥德尔编码 | every symbol, formula and proof gets a number |
+| self-reference | 自指 | a statement that talks about itself |
+| first / second incompleteness theorem | 第一 / 第二不完备定理 | true but unprovable statements exist / the system cannot prove its own consistency |
 
 ## The vocabulary, made precise
 
@@ -157,11 +164,11 @@ The same relentless logic that found the limits of reason eventually turned inwa
 
 ## Exam Notes
 
-Like the rest of this trio ([[Turing Machine]], [[The Turing Test]], [[P vs NP]]), Gödel's theorems are **not named on Cambridge IGCSE 0478 or A-Level 9618** — they are theory-of-computation / mathematical-logic enrichment. They earn their place as the logical twin of the halting problem and the philosophical capstone of the Foundations bay:
+Gödel's theorems are **not named on any board on file**: the words do not occur in the Cambridge 0478 or 9618 syllabuses, the IB Computer Science guide (2027) or the AP Computer Science A course description. Like [[Turing Machine]], [[The Turing Test]] and [[P vs NP]], this is theory-of-computation and mathematical-logic enrichment, and it earns its place because the result is invoked constantly and almost always wrongly.
 
-- **A-Level / IB further mathematics, Theory of Knowledge.** Incompleteness is a standard TOK touchstone for "the limits of mathematical knowledge" — and this card is the version that states it *correctly* rather than via the usual pop-misquotes.
-- **University** — a fixture of mathematical logic, theory of computation, and philosophy of mathematics; the standard route is via computability (Turing) then Gödel numbering, exactly the lineage built here. Boolos, Burgess & Jeffrey's *Computability and Logic* is the classic text.
-- **General literacy** — Gödel's name is invoked constantly and almost always wrongly. Knowing the real statement, its conditions, and its limits is the difference between understanding a deep result and parroting a slogan.
+- **IB Theory of Knowledge** treats incompleteness as a touchstone for the limits of mathematical knowledge; that guide is not on file, so the placement is customary rather than verified.
+- **University** — a fixture of mathematical logic, theory of computation and philosophy of mathematics; the standard route is computability (Turing) then Gödel numbering, exactly the lineage built here. Boolos, Burgess and Jeffrey's *Computability and Logic* is the textbook.
+- **General literacy** — knowing the real statement, its conditions (consistency, enough arithmetic) and its limits is the difference between understanding a deep result and repeating a slogan.
 
 ## Connections
 

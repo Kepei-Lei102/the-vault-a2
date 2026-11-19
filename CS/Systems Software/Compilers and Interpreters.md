@@ -1,14 +1,20 @@
 ---
 chinese: 编译器与解释器 (biānyìqì yǔ jiěshìqì)
 prerequisites:
+  - "[[Four Colour Theorem]]"
   - "[[Assembly Language]]"
   - "[[CISC vs RISC]]"
   - "[[Operating Systems]]"
   - "[[Recursion]]"
+  - "[[Programming Paradigms]]"
 leads_to:
   - "[[Stacks and Queues]]"
   - "[[The Call Stack]]"
   - "[[A, B, C]]"
+  - "[[Program Development Life Cycle and Testing]]"
+  - "[[Java Values and Expressions]]"
+teach_together:
+  - "[[Grace Hopper and the Nanosecond]]"
 tags:
   - subject/computer-science
   - domain/systems-software
@@ -32,6 +38,10 @@ tags:
 > *[[Assembly Language]] left the ladder one rung short. A processor executes only its own machine code — yet almost nobody writes machine code, or even assembly. Every program you have ever used began as a **high-level language**: human-shaped text full of names, formulas, and structure that no CPU can execute. Somebody has to translate — and it turns out there are two great ways to do it, as different as translating a novel and interpreting at a summit. Translate the whole book once, and every reading afterwards is fast — but you must finish the whole translation before anyone reads a word. Or interpret live, sentence by sentence — start instantly, stop at the first confusing line — and accept that every reading costs the translation again. That one trade-off runs through this whole card, and the exam questions almost write themselves from it.*
 
 ## 中文锚点
+
+你有一封信要交给一个只懂另一种语言的人。一种办法是请一位笔译：他把整封信拿走，全部译完，交回一份成品。以后这份成品想看多少遍都行，再也用不着译者；可是原信里只要有一处错，在交出去之前就会被发现，什么也送不出去。另一种办法是带一位口译：他站在你旁边，你说一句他译一句。马上就能开始，第十句说错了，前九句也已经传达过去了；可是每一次都得有他在场，再讲一遍也和第一遍一样慢。**编译器**是前一种，**解释器**是后一种。处理器只懂它自己的机器指令，所以凡是用人看得懂的语言写的程序，都得走这两条路中的一条；走哪一条，决定了错误什么时候被发现、程序跑得多快，以及你最后要交给运行者的是什么。
+
+### 术语对照 (Terms)
 
 | English | 中文 | one-line meaning |
 |---|---|---|
@@ -231,7 +241,7 @@ RPN's whole point is a single **left-to-right** pass; and on `-` or `÷`, the *f
 
 ### Other boards
 
-- **AP CSA:** Java-only and assumes the toolchain — the compile step appears as vocabulary (compiler errors vs runtime errors), no translator theory. **IB CS 2027:** translators are not a named statement list; this card is depth behind their programming units.
+- **AP CSA:** Java-only and assumes the toolchain — the compile step appears as vocabulary (compiler errors vs runtime errors), no translator theory. **IB CS 2027:** translation is a named higher-level statement, **A1.4.1, "Evaluate the translation processes of interpreters and compilers"**: how each works and where each is used; their differences in error detection, translation time and portability, including bytecode interpreters and just-in-time compilation; and three scenarios to argue from, which are rapid development and testing, performance-critical applications, and cross-platform development. It is not in the standard-level course.
 
 ## Beyond the syllabus
 
@@ -246,6 +256,10 @@ RPN's whole point is a single **left-to-right** pass; and on `-` or `÷`, the *f
 
 ## Connections
 
+- **Historical companion:** [[Grace Hopper and the Nanosecond]] — reusable routines, FLOW-MATIC, the collaborative origins of COBOL, and making machine work accessible.
+
 - **Builds on:** [[Assembly Language]] — the assembler, the 1-to-1 rule this card's translators break on purpose, and the machine-code destination of stage 3; [[CISC vs RISC]] — RISC's founding bet was that compilers, not humans, write the assembly: this card is the bet's other half, honoured in stage 4; [[Operating Systems]] — the bay's government: it loads what the compiler produced, supplies the libraries the linker leans on, and hosts the hardware-level VMs this card's bytecode VMs are cousins of; [[Recursion]] — BNF's self-referring rules are recursion writing grammar.
 - **Leads to:** [[Stacks and Queues]] — RPN's engine: the pop-two-push-one discipline as a named, disciplined structure; [[The Call Stack]] — the call stack every running program lives on, frames and all; [[A, B, C]] — the story that ran this card's trade-off live: B interpreted and too slow for a kernel, C compiled and rewriting Unix within two years.
 - **Kindred:** [[Von Neumann machine]] — code-as-data is what makes translators possible at all: a compiler is a program whose *output* is a program; [[Embedded Systems]] — where compilation is the only option on the chip; [[Courage]] — binary translation shipped as a product: Rosetta translating just-in-time in 2006, Rosetta 2 translating ahead-of-time in 2020, each carrying a whole software ecosystem across a CPU change.
+- **Prerequisite:** [[Programming Paradigms]] — every paradigm is a pretence a translator pays for; the declarative one is paid for by a search engine instead.
+

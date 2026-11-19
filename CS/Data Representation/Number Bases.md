@@ -1,8 +1,9 @@
 ---
 chinese: 进制 (jìnzhì)
 prerequisites:
-  - "[[Logic Gates]]"
+  - "[[Laws of Indices]]"
 leads_to:
+  - "[[Logic Gates]]"
   - "[[Two's Complement]]"
   - "[[Half-Adder and Full-Adder]]"
   - "[[CPU Architecture and the Fetch-Execute Cycle]]"
@@ -48,6 +49,10 @@ The crucial thing to hold onto from the start: **changing base does not change t
 Computers use base 2 for one physical reason: a circuit element is reliably either **off or on** (low or high voltage) — two states, cleanly distinguishable, exactly the [[Logic Gates|gates]] that make up every chip. There is no cheap, reliable "ten-state" wire, so hardware counts in two. Hex exists because raw binary is exhausting for humans to read, and base 16 packs neatly into binary (one hex digit = four bits).
 
 ### 中文锚点
+
+90 分钟和 1 小时 30 分是同一段时间，只是改成了每 60 个一捆；13 个鸡蛋和"一打零一个"是同一堆鸡蛋，只是改成了每 12 个一捆。进制就是这么回事：约定好每多少个捆成一捆。我们有十根手指，所以习惯十个一捆，"二十三"就是两捆十个再加三个零头。计算机的电路只有"关"和"开"两种稳定状态，只好两个一捆，同样这么多，写成二进制就是 10111：一个十六、零个八、一个四、一个二、一个一。数量从头到尾没变，变的只是捆法。十六进制是十六个一捆，是为了方便人读二进制：一个十六进制位正好对应四个二进制位。
+
+### 术语对照 (Terms)
 
 **进制**（jìnzhì, number base / radix）：一个计数系统用多少个数字符号，以及每一位的「权重」是哪个数的幂。
 
@@ -156,23 +161,26 @@ Only in denary. `10` is two in binary, sixteen in hex. Whenever a base isn't obv
 
 ## Exam Notes
 
-### Cambridge 0478 (IGCSE CS)
+### Cambridge 0478 (IGCSE), §1.1 Number systems
 
-**§1.1.1–1.1.2** — binary as the universal representation; convert between **denary, binary, and hex** in any direction (up to 16-bit); and explain the **use of hex** in CS (readability, colour codes, addresses, error codes). Those rows close here. Binary **addition, overflow, logical shifts** (§1.1.4–5) and **two's complement** for signed integers (§1.1.6) live in [[Two's Complement]] and [[Overflow and Underflow]].
+1 "Understand how and why computers use binary to represent all forms of data" ("Any form of data needs to be converted to binary to be processed by a computer"; "Data is processed using logic gates and stored in registers"). 2(a) "Understand the denary, binary and hexadecimal number systems" (bases 10, 2 and 16); 2(b) "Convert between (i) positive denary and positive binary (ii) positive denary and positive hexadecimal (iii) positive hexadecimal and positive binary", with "Values used will be integers only", "Conversions in both directions" and "Maximum binary number length of 16-bit". 3 "Understand how and why hexadecimal is used as a beneficial method of data representation": the areas where it is used should be identified, and "Hexadecimal is easier for humans to understand than binary, as it is a shorter representation of binary". Points 4–6 (8-bit addition and overflow, logical shifts, two's complement) are [[Overflow and Underflow]] and [[Two's Complement]].
 
-### Cambridge 9618 (A-Level CS)
+### Cambridge 9618 (AS Level), §1.1 Data Representation
 
-**§1.1 Data Representation** bundles binary/denary/hex + conversions (closed here) with binary addition + overflow ([[Overflow and Underflow]]), signed binary ([[Two's Complement]]), and **BCD** ([[Floating-Point Representation]]). The advanced §13.3 (floating-point) builds on all of it.
+"Show understanding of different number systems": "Use the binary, denary, hexadecimal number bases and Binary Coded Decimal (BCD) and one's and two's complement representation for binary numbers" and "Convert an integer value from one number base/representation to another"; "Describe practical applications where Binary Coded Decimal (BCD) and Hexadecimal are used". The same row asks for "binary magnitudes and the difference between binary prefixes and decimal prefixes" (kibi/kilo, mebi/mega, gibi/giga, tebi/tera), which [[Storage Units (Vocab)]] carries; BCD is in [[Floating-Point Representation]]'s neighbourhood and the signed forms in [[Two's Complement]].
 
-### IB Computer Science — A1.2
+### IB Computer Science (2027 guide), A1.2.1
 
-**Binary/hexadecimal and conversion is a named A1.2 statement** — the same skill set as 0478: convert denary ↔ binary ↔ hex in every direction, and say *why* each base exists (two reliable physical states → binary; one hex digit = one nibble → hex as compression for eyeballs). IB pairs it in A1.2 with logic gates "processing encoded data," so expect conversions embedded in a small scenario rather than asked bare.
+"Describe the principal methods of representing data": "The representation of integers in binary and hexadecimal"; "Conversion of binary and hexadecimal integers to decimal, and vice versa"; "Conversion of integers from binary to hexadecimal, and vice versa". The same skill set as 0478, plus the *why* of each base.
 
-*(AP CSA is a programming course and doesn't test number-base conversion directly — but bitwise/`int` behaviour rests on exactly this, so it's worth knowing.)*
+### Where this is *not* examined
+
+AP Computer Science A does not test number-base conversion; Java's `int` behaviour rests on it, which is why the Java companions refer here. No mathematics board on file examines bases.
 
 ## Connections
 
-- **Prerequisite:** [[Logic Gates]] — the two physical states (off/on) that make base 2 the natural language of hardware; number bases are "what those 0s and 1s spell."
+- **Prerequisite:** [[Laws of Indices]] — place value is powers of the base: $b^2, b^1, b^0$ to the left of the point and $b^{-1}, b^{-2}$ to the right, so every conversion here is an exercise in indices.
+- **Next, into hardware:** [[Logic Gates]] — the 0 and 1 this card names are the two voltage states a gate switches between; number bases are "what those 0s and 1s spell", and [[The Transistor as a Switch — How Analog Becomes Digital]] is why hardware settled on two states.
 - **Sibling unit:** [[Information Theory]] — the **bit** as the *unit of information* (Shannon), the quantitative companion to the bit as a *digit* here.
 - **Next:** [[Two's Complement]] — how those bits represent **negative** integers, plus binary addition, overflow, and shifts; then text/sound/image encoding and compression fill out the Data Representation bay.
 - **History:** [[Stories/The Boolean-to-Silicon Bridge]] — how two-state logic became the substrate of every computer.

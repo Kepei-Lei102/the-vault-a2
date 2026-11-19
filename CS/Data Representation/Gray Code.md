@@ -20,6 +20,7 @@ tags:
   - misconception/gray-is-just-another-value
   - misconception/gray-code-is-unique
   - misconception/gray-needs-more-bits
+  - level/enrichment
 ---
 
 # Gray Code 格雷码
@@ -38,6 +39,10 @@ The point is physical. In the real world, bits **do not change simultaneously** 
 > Named for **Frank Gray**, a Bell Labs physicist, who used the "reflected binary code" in a 1947 patent to cut errors in pulse-code transmission. But the pattern is far older: Émile **Baudot** used a form of it in 1870s telegraphy, and the [[Stigler's Law of Eponymy|Chinese rings puzzle]] below embodies it by the 17th century. A mild case of [[Stigler's Law of Eponymy]] — the code is named after neither its first nor its last discoverer.
 
 ### 中文锚点
+
+看老式机械里程表从 0999 跳到 1000：四个数字轮同时在转，恰好在这一瞬间拍张照，你可能拍到 1999 或 0990——车从来没有开到过的数。普通二进制有同样的毛病：从 0111 到 1000，四位全要翻，而它们不可能在同一瞬间翻完，传感器要是正好在这时读数，就可能读出一个离谱的值。格雷码把数的顺序重新排过，让每走一步只变一位。这样即使正好读在变化的半路上，那一位要么还是旧的、要么已经是新的，读到的只会是旧值或新值，绝不会冒出一个不相干的数。音量旋钮和机器人关节里，用来报告角度的那张码盘，印的就是格雷码。
+
+### 术语对照 (Terms)
 
 | English                   | 中文                | 一句话              |
 | ------------------------- | ----------------- | ---------------- |
@@ -160,14 +165,17 @@ Count in Gray, and the single flipping bit *is* the instruction: in the Tower of
 
 ## Exam Notes
 
-### Cambridge 9618 (A Level, §15.2)
-Gray code is the (usually unnamed) ordering along the axes of a [[Karnaugh Maps|Karnaugh map]] — `00, 01, 11, 10`, not `00, 01, 10, 11`. Knowing *why* that order is used — so physically adjacent cells differ in one variable and can be grouped — is knowing why K-maps work at all. The conversion algorithms and encoders are enrichment, but the one-bit-adjacency idea is directly load-bearing for the examined K-map technique.
+### Cambridge 9618 (A Level), §15.2
 
-### Cambridge 0478 / AP / IB CS
-Not examined on any of them — the IB 2027 guide's logic content (A1.2) stops at gates processing binary data, with no Karnaugh maps, so Gray code doesn't even get the unnamed-axis appearance it has on 9618. It surfaces first in real digital design and embedded work.
+Gray code is the unnamed ordering along the axes of a [[Karnaugh Maps|Karnaugh map]]: `00, 01, 11, 10`, not `00, 01, 10, 11`, so that physically adjacent cells differ in one variable and can be looped. The syllabus row asks candidates to "Solve logic problems using Karnaugh maps"; it never names Gray code, so knowing *why* the axes run that way is the only examinable trace.
+
+### Where this is *not* examined
+
+Cambridge 0478 stops at gates and truth tables. The IB Computer Science guide (2027) names Karnaugh maps in A1.2.4 but not Gray code; AP Computer Science A has neither. The phrase does not occur in any syllabus on file. It surfaces first in digital-design courses and in engineering practice.
 
 ### Where it surfaces
-Absolute rotary/linear encoders, clock-domain-crossing FIFOs, Gray-coded modulation in comms, and error-tolerant counters — Gray code is a working engineer's everyday tool wherever a multi-bit value is read asynchronously.
+
+Absolute rotary and linear encoders, clock-domain-crossing FIFOs (**Clock Domains and Metastability** *(not yet released)*), Gray-coded modulation in communications, and error-tolerant counters: an everyday tool wherever a multi-bit value is read asynchronously.
 
 ---
 

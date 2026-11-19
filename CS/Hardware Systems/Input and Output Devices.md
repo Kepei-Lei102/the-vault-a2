@@ -8,6 +8,7 @@ leads_to:
   - "[[Embedded Systems]]"
   - "[[Interrupt Handling]]"
   - "[[The Blue LED]]"
+  - "[[Automated Systems and Robotics]]"
 tags:
   - subject/computer-science
   - domain/computer-architecture
@@ -31,6 +32,10 @@ tags:
 > *A processor cannot see a photograph, hear a voice, or feel a fingertip. It moves numbers between registers — that is the whole of what it does. So every device that connects a computer to a person is a **translator**: it turns some physical thing a human can produce (a keypress, a spoken word, a touch) into a number, or turns a number back into some physical thing a human can perceive (ink on paper, light on a screen, a pressure wave in the air). Learn the devices as **transducers**, not as a list — every one of them is the same idea in a different costume: **cross the boundary between the digital interior and the analog world outside.***
 
 ## 中文锚点
+
+你对着手机说话，拍一张照片，再放一首歌。看上去是三件完全不同的事，在手机里其实是同一件事的两个方向。麦克风把空气的振动变成一串数，摄像头把照在它上面的光变成一格一格排开的数，扬声器则反过来，把一串数重新变回空气的振动。计算机除了数什么也处理不了，而它外面的世界是由压力、光、运动和热组成的，所以计算机边缘上的每一个设备，都是站在两边之间的翻译。输入设备把某种物理量翻译成数，输出设备把数翻译回某种物理量。一旦这样去看一个设备，对任何设备要问的问题就都一样了：它测的或者产生的是哪一种量？能分得多细？每秒做多少次？
+
+### 术语对照 (Terms)
 
 | English | 中文 | one-line meaning |
 |---|---|---|
@@ -205,6 +210,7 @@ Not examined — AP CSA is a programming course; I/O hardware is out of scope.
 - **Leads to:** [[Sensors and Control Systems]] — the *world*-facing twin of this *human*-facing card: sensors and actuators in the monitoring/control loop (where the 0478 actuator and the VR headset's motion sensors properly live); [[Embedded Systems]] — a whole computer built around that sense-decide-act loop; [[Interrupt Handling]] — the ISR / vector-table / priority machinery in full.
 - **Physics bridge:** the microphone/speaker and camera/screen pairs are transducers in the [[Damped Oscillations|oscillation]] and wave sense — a voice coil pushing a cone is a driven mechanical system.
 - **Story:** [[Stories/The Blue LED]] — the "LED screen" rows have a human story: thirty years of red-and-green, a phosphor company from Tokushima, and the Nobel that Alfred Nobel's will was actually written for.
+- **Leads to:** [[Automated Systems and Robotics]] — sensors and actuators as the boundary devices of a system with no human in it.
 
 ## Glossary
 

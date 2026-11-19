@@ -1,11 +1,14 @@
 ---
 chinese: 递归 (dīguī)
+aliases:
+  - 递归
 prerequisites:
   - "[[Logic]]"
   - "[[Factorial Notation]]"
   - "[[Sequences]]"
   - "[[Proof by Induction]]"
   - "[[Logic Gates]]"
+  - "[[Programming Paradigms]]"
 leads_to:
   - "[[Dynamic Programming]]"
   - "[[Searching]]"
@@ -17,6 +20,9 @@ leads_to:
   - "[[Turing Machine]]"
   - "[[Parallel and External Sorting]]"
   - "[[The Boolean-to-Silicon Bridge]]"
+  - "[[Memory Allocation and the Heap]]"
+teach_together:
+  - "[[Natural Numbers]]"
 tags:
   - subject/computer-science
   - subject/mathematics
@@ -76,7 +82,9 @@ Two facts hide in plain sight inside this six-line definition:
 
 ### 中文锚点
 
-**递归 (dīguī)** = 一个函数在它的定义里调用自己，每次都让问题变小一点，最终落到一个不再递归的「基础情况」(基线条件)。
+电影院里黑着灯，你想知道自己坐在第几排。你拍拍前面的人问：“你是第几排？”他也不知道，于是去问他前面的人，前面的人再问更前面的。这个问题一路往前传，直到传到第一排的人那里，他不用问任何人就能回答：“第一排。”然后答案开始往回传：“一”“二”“三”，每个人都在听到的数上加一，直到你前面那个人回过头来说“七”，你就知道自己在第八排。这一串人里没有谁做了什么聪明的事。每个人做的都是同一件小事：把同一个问题缩小一点点，传给前面的人，等着，再加一。这就是递归，它的两半都摆在明面上：一半是让问题变小的那一步，另一半是第一排，问话到这儿为止。要是把第一排拿掉，问题就会一直往前传下去，永远不会有答案传回来。
+
+#### 术语对照 (Terms)
 
 | English | 中文 | What it means |
 |---|---|---|
@@ -383,9 +391,24 @@ The fix is one line of memoisation. See beyond-syllabus.
 
 ---
 
+## Check your understanding — calls, returns and termination
+
+Predict before running anything. Draw the active frames rather than listing only the final answer.
+
+1. **Trace both directions.** For the original `factorial(3)`, list the arguments on descent, the returned values on ascent, and the greatest number of simultaneously active factorial frames.
+2. **Transfer the trace.** For `gcd(30, 18)`, list every pair of arguments and the returned result. Explain which quantity decreases toward the base case for these positive inputs.
+3. **Distinguish depth from work.** For the original naive `fib(4)`, count all invocations, including the initial call, and the maximum number of simultaneously active Fibonacci frames. Explain why these counts differ and identify a repeated subproblem.
+
+> [!success]- Check your reasoning
+> 1. Arguments: $3, 2, 1, 0$; returns: $1, 1, 2, 6$. Peak: **4 factorial frames**. Each waiting frame retains a multiplication to perform after its child returns.
+> 2. $(30,18) \to (18,12) \to (12,6) \to (6,0)$; the result $6$ returns through the waiting calls. While the second argument is positive, the next second argument is a non-negative remainder strictly smaller than it.
+> 3. **9 invocations**, but only **4 active Fibonacci frames** at the deepest point. The two branches execute in turn; the stack does not contain the whole tree at once. `fib(2)` is computed twice. A correct final value alone does not demonstrate either count.
+
+These checks establish tracing and explaining termination on given code. Writing a new recursive solution and reasoning about memoisation require separate evidence.
+
 ## Java specifics for AP CSA
 
-Recursion in Java looks like recursion anywhere else, with the addition of [[Static Method Declarations]]:
+Recursion in Java looks like recursion anywhere else. The one addition is the header: `public static int` says that the method can be called from any class, belongs to the class itself and not to one object, and returns an `int`.
 
 ```java
 public static int factorial(int n) {
@@ -397,12 +420,12 @@ public static int factorial(int n) {
 }
 ```
 
-AP CSA §4.16 and §4.17 expect students to:
-- **Trace** a given recursive method, frame by frame, on a small input
-- **Identify** the base case and recursive case in code
-- **Reason about** what happens when the base case is missing (stack overflow)
-- **Convert** simple recursive methods to iterative form and vice versa
-- **Recognise** classic recursive structures: factorial, Fibonacci, sum of array elements, recursive search
+AP CSA topics 4.16 and 4.17 (course effective Fall 2025) assess recursion by **tracing only**: the course description states that writing recursive code is outside the course and exam. They expect students to:
+- **Determine the result** of calling a given recursive method, frame by frame, on a small input, remembering that each call has its own parameters and local variables
+- **Identify** the base case and the recursive call in code
+- **Know** that any recursive solution can be rewritten with a loop and the reverse, without being asked to do the rewriting
+- **Trace** recursive methods that walk through a `String`, an array or an `ArrayList`
+- **Determine the result of each step** of binary search, written with a loop or recursively, and of merge sort (topic 4.17)
 
 The AP CSA exam particularly favours the **tracing** task — given a small recursive method, predict its output. The systematic call-stack method shown in Example 1 above is the universal answer technique. **Draw the stack. Don't try to mentally simulate it without paper.**
 
@@ -535,7 +558,7 @@ What this means: **recursion is not one programming feature among many. It is on
    - [[Dynamic Programming]] — the systematic way to remove redundancy from recursive solutions via memoisation or tabulation.
    - [[Searching]] — home of **binary search**, the canonical $O(\log n)$ recursive algorithm; divide-and-conquer in its purest form.
    - [[Sorting]] — **merge sort** is divide-and-conquer recursion at full size: split the list in half, recurse on each, merge the sorted halves.
-   - **Binary Trees** *(not yet released)* — the recursively-defined data structure (a tree is a node plus two smaller trees) where recursive traversal is far more natural than iteration — and where the in-order walk of a search tree emits sorted output.
+   - [[Binary Trees]] — the recursively-defined data structure (a tree is a node plus two smaller trees) where recursive traversal is far more natural than iteration — and where the in-order walk of a search tree emits sorted output.
    - [[Big-O Notation]] — the formal language for talking about the time cost of recursive algorithms ($O(n)$ for factorial, $O(\log n)$ for binary search, $O(\varphi^n)$ for naive Fibonacci).
    - [[Recursion as a Way of Thinking]] — the cognitive expansion beyond this card.
 
@@ -547,6 +570,7 @@ What this means: **recursion is not one programming feature among many. It is on
    - [[Fractals]] — self-similar geometric structures.
 
 - **Misconception traps cleared:** recursion is **not** just "iteration with extra steps" (the call stack changes the memory model); a recursive function **must** have a base case (else stack overflow); the recursive call **must** make progress toward the base case (or it never terminates); naive recursion can be **exponentially** slow without memoisation (Fibonacci); and recursion and induction are **the same idea**, just used for different goals.
+- **Prerequisite:** [[Programming Paradigms]] — the declarative `ancestor` rule is recursion with no loop anywhere, and left recursion is the infinite-loop trap.
 
 ---
 

@@ -7,6 +7,7 @@ prerequisites:
 leads_to:
   - "[[CISC vs RISC]]"
   - "[[Compilers and Interpreters]]"
+  - "[[Programming Paradigms]]"
 tags:
   - subject/computer-science
   - domain/computer-architecture
@@ -31,6 +32,10 @@ tags:
 > *Your computer has never run a single line of Python. Not one. It has never run C, or Java, or anything a human has ever shown you. Everything you have ever written was, before it ran, quietly converted into the only language the machine has ever spoken — patterns of bits, fetched and executed by the cycle you already know. **Assembly language is that language with names on**: one human-readable line per machine instruction, one-to-one, nothing hidden. It is the last floor of the software tower where you can still see every register move — the CPU with the case off. This card teaches you to read it, trace it, and translate it — and to meet the small, honest program that does the translating.*
 
 ## 中文锚点
+
+拿一个最便宜的计算器算 (3 + 4) × 5。你没法把整个式子一口气输进去，只能按 3、加号、4、等号、乘号、5、等号，而从头到尾屏幕上只有一个数，每按一下键，它就变一点。处理器也是这样干活的。它有一个一次只能放一个数的“工作位置”，只听得懂特别简单的指令：把这个数取到工作位置上来，把那个数加上去，把结果存到那边去，结果还不是零就回到第二步。汇编语言写的程序，就是把这一串按键记下来，一条指令占一行，用 LOAD、ADD 这样的短名字来代替处理器真正使用的那些数字。你用 Python 或 Java 写的所有程序，都要先翻译成这样一张清单，机器才能运行，所以一行 Python 翻译出来可能是几十行汇编。
+
+### 术语对照 (Terms)
 
 | English | 中文 | one-line meaning |
 |---|---|---|
@@ -66,7 +71,7 @@ Cambridge examines a clean teaching machine: an **ACC** (accumulator — the wor
 
 | Group | Instructions | What they do |
 |---|---|---|
-| **Data movement** | `LDM #n` · `LDD <addr>` · `LDI <addr>` · `LDX <addr>` · `LDR #n` · `MOV <reg>` · `STO <addr>` | load the ACC (four different ways — see addressing modes), load the IX, copy ACC↔IX, store ACC to memory |
+| **Data movement** | `LDM #n` · `LDD <addr>` · `LDI <addr>` · `LDX <addr>` · `LDR #n` · `MOV <reg>` · `STO <addr>` | load the ACC (four different ways — see addressing modes), load the IX, copy ACC → IX, store ACC to memory |
 | **Input / output** | `IN` · `OUT` | read one character into ACC; write ACC as one character |
 | **Arithmetic** | `ADD <addr>` / `ADD #n` · `SUB <addr>` / `SUB #n` · `INC <reg>` · `DEC <reg>` | add/subtract into ACC; nudge ACC or IX by one |
 | **Compare** | `CMP <addr>` / `CMP #n` · `CMI <addr>` | compare ACC with a value — sets a flag, changes nothing else |
@@ -78,7 +83,7 @@ Two habits to wire in now: **`CMP` does nothing visible** — it only sets a fla
 
 ## Addressing modes — five answers to "where is it?"
 
-The same `LD` idea comes in several costumes, and the difference between them is the single most examined idea in §4.2. Each mode adds **one more level of indirection** — one more hop before you reach the data:
+The same `LD` idea comes in several costumes, and the difference between them is the single most examined idea in §4.2. Each mode specifies a different rule for finding the operand; **indirect** addressing adds a lookup, whereas **indexed** addressing adds an offset:
 
 ![[asm-addressing-modes.svg|697]]
 
@@ -206,3 +211,5 @@ The exam's favourite exercise is *being* the assembler: given a short program, p
 - **Builds on:** [[CPU Architecture and the Fetch-Execute Cycle]] — the registers and cycle every instruction here drives; instructions-as-numbers is that card's opcode/operand story, completed; [[Number Bases]] — hex as machine code's native costume; [[Bitwise Operations]] — the AND/OR/XOR/shift instructions' full mechanics.
 - **Leads to:** [[CISC vs RISC]] — why instruction sets themselves disagree, and the war over what an instruction should be; [[Compilers and Interpreters]] — the translators that *design* machine code instead of transcribing it, where the one-to-one rule breaks and the interesting choices begin.
 - **Kindred:** [[Embedded Systems]] — where hand-written assembly still earns its keep (boot code, tight ISRs); [[Interrupt Handling]] — the return-from-interrupt and state-saving this card's instructions implement; [[Von Neumann machine]] — code-as-numbers is the stored-program idea, and assembly is its human handle.
+- **Leads to:** [[Programming Paradigms]] — the low-level paradigm beside the other three, and the five addressing modes run on a register machine.
+

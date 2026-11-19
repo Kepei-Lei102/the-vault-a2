@@ -44,9 +44,7 @@ The contrast that makes it sharp:
 
 ## 中文锚点
 
-**冯·诺依曼机**（**存储程序计算机** stored-program computer）的核心思想只有一句：**程序和数据放在同一块可读写的存储器里**，指令本身就是**存储器中的数字**，与数据在形式上毫无区别。处理器不断地从存储器里**取出下一条指令并执行**——这就是 [[CPU Architecture and the Fetch-Execute Cycle|取指执行周期]] 跑的那个循环。
-
-革命性在于「**程序即数据**」：换任务不用重新接线，只要往存储器里写入不同的数字即可（对比 ENIAC 那种靠插线板的「固定程序」机器，换个问题要接线好几天）。由此衍生出汇编器、编译器、加载器（**会生成程序的程序**）、自举（bootstrapping）、自修改代码——也带来安全隐患：数据若能被当成指令执行，畸形数据就能劫持程序（缓冲区溢出、代码注入）。这正是图灵 1936 年「通用机」（[[Turing Machine]]）的**可建造版本**：喂入不同的「描述」 = 装入不同的程序。谱系：图灵（理论）→ 冯·诺依曼（架构）→ 真实 CPU。
+同一部手机，刚才还在看照片，转眼就能放音乐、算账。你没有拆开它重新接线，只是打开了不同的程序。关键在于：**告诉机器该做什么的指令，本身也能变成数字存进存储器。** 换一组指令，同一套硬件就能照着另一套步骤工作。在冯·诺依曼模型里，指令和数据共用存储器；于是，换任务不必重造机器，只要换掉它读到的程序。
 
 ## The leap — from rewiring to reloading
 
@@ -118,11 +116,23 @@ The honest picture is messy. Von Neumann did not claim sole invention, and the i
 
 ## Exam Notes
 
-The **examinable** content — "the von Neumann architecture: one memory for program and data; ALU, CU, registers, buses; the fetch-decode-execute cycle" — is delivered and closed by the [[CPU Architecture and the Fetch-Execute Cycle]] card (IGCSE 0478 §3.1, AS 9618 §4.1). This card is the **history and the why** behind that one syllabus phrase, and is the best material for the higher-mark "explain the significance of the stored-program concept" style questions.
+The **examinable** content — one memory for program and data, ALU, CU, registers, buses, the fetch–decode–execute cycle — is delivered by [[CPU Architecture and the Fetch-Execute Cycle]], which carries the register-level rows. This card supplies the idea behind it and the one-line answer the boards want.
 
-- **Cambridge 0478 / 9618** — be able to state that a von Neumann machine holds **program and data in the same memory** and that this is what makes a stored-program computer *general-purpose*. The one-line exam answer: *"instructions are stored as data, so the computer can run any program loaded into memory without being rewired."*
-- **IB CS (2027)** — the von Neumann *model* is A1.1 working vocabulary, delivered (with the IB tags) by [[CPU Architecture and the Fetch-Execute Cycle]]; this card's historical and theoretical depth — First Draft, EDVAC, code-as-data — is **not separately examined**.
-- **A-Level depth / university** — the **von Neumann bottleneck**, the **Harvard** alternative, and the code-as-data consequences (compilers, bootstrapping, security) are standard in any first architecture course.
+### Cambridge 0478 (IGCSE), §3.1
+
+2(a) asks for "the purpose of the components in a CPU, in a computer that has a Von Neumann architecture". The phrase is the syllabus's; what it means for an answer is that program and data share one memory, so the same fetch cycle reads either, and "instructions are stored in memory as data" is the sentence that earns the mark.
+
+### Cambridge 9618 (AS Level), §4.1
+
+"Show understanding of the basic Von Neumann model for a computer system and the stored program concept." The stored-program concept is named explicitly, so a definition question can ask for it directly: instructions and data held in the same memory, fetched in sequence, the program itself changeable like data. The von Neumann bottleneck and the Harvard alternative are not named on 9618; they are A-level depth and first-year architecture.
+
+### IB Computer Science (2027 guide), A1.1
+
+A1.1.1 and A1.1.5 list the components and the fetch–decode–execute cycle without using the phrase "von Neumann". The model is the working vocabulary for those statements, delivered by the CPU card.
+
+### Where this is *not* examined
+
+AP Computer Science A has no architecture content. This card's history (the First Draft, EDVAC, code as data, bootstrapping and its security consequences) is enrichment on every board.
 
 ## Connections
 

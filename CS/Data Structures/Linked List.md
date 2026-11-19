@@ -7,6 +7,7 @@ prerequisites:
 leads_to:
   - "[[Binary Trees]]"
   - "[[Hash Tables]]"
+  - "[[Memory Allocation and the Heap]]"
 tags:
   - subject/computer-science
   - domain/data-structures
@@ -28,7 +29,9 @@ tags:
 
 ## 中文锚点
 
-玩过寻宝游戏吗？每张纸条上写的不是宝物，而是**下一张纸条藏在哪**。纸条可以东一张西一张散落全屋——顺序不靠摆放位置，全靠每张纸条里那行"下一站"。这就是链表：每个**节点**装两样东西——数据本身，和下一个节点的**地址**（指针）；最后一张纸条写着"没有下一站"（空指针，考卷上的 −1），而你手里只攥着第一张（头指针），全链由此可达。它换来的本事正是数组给不了的：火车中段要加一节车厢，不必全列让位——**解开一个挂钩、挂上两个**，两次指针改写就完成，列车多长都一样；删除更省，把挂钩绕过那节车厢，一次改写了事（被绕过的车厢并没有被销毁——只是再也没有挂钩通向它）。代价同样立刻到账：想看第 500 节车厢？没有"算一下直接跳"这回事，只能从车头一节节摸过去——数组的一步直达，在这里换成了 $O(n)$ 的顺藤摸瓜。空出来的车厢也不浪费：它们自己也被链成一列（**空闲链表**），要新节点就从那儿领、删了就还回去——用一个链表来管理"链表能用的空位"，漂亮得像句绕口令。
+玩寻宝游戏的时候，纸条上写的不是宝物，而是下一张纸条藏在哪儿。纸条可以散在屋子的各个角落，一张在鞋里，一张在挂钟后面，可这场寻宝的先后顺序一点也不乱，因为顺序不在纸条放的位置上，而在每张纸条写的那句话里。链表就是这样存数据的：每一项除了自己的数据，还记着下一项在哪儿，而你手里只握着第一项。它的两个脾气都是从这儿来的。想在寻宝中途加一步，什么都不用搬：多藏一张新纸条，再把前一张纸条上的那一行改掉就行了。可要是想直接去看第十张纸条，没有捷径，因为除了第九张，谁也不知道它在哪儿，你只能从第一张开始，一张一张跟过去。
+
+### 术语对照 (Terms)
 
 | English | 中文 | one-line meaning |
 |---|---|---|
@@ -83,6 +86,22 @@ class LinkedList:
 
 Traversal is the price of the scattered life: to reach the fifth item you must walk through four `next` pointers — there is no formula that jumps to item $i$, because location was the thing we gave up. **A linked list trades random access for cheap change.** Whether that trade is right is a question the situation answers, never the structure alone.
 
+## Finding an item — follow the chain until an answer
+
+Tool: a linear walk, because there is no address formula for a linked list. Add this method inside `LinkedList`:
+
+```python
+    def find(self, value):
+        current = self.head
+        while current is not None:
+            if current.data == value:
+                return current        # return the matching node
+            current = current.next
+        return None                   # also handles an empty list
+```
+
+The invariant is that every node before `current` has been checked and did not match. Each hop shortens the unchecked suffix; finding a match or reaching `None` finishes the search. Best case $O(1)$, worst case $O(n)$ time, and $O(1)$ extra space. Returning the node lets the caller inspect its data; returning `None` distinguishes absence from a legitimate stored value such as zero.
+
 ## The operations — two writes, one write
 
 ### Insert: two pointer writes
@@ -126,6 +145,14 @@ def delete(self, value):
     prev.next = prev.next.next            # one write; the node is a ghost
     return True
 ```
+
+### The same two operations with a walking pair
+
+The object-oriented style Paper 4 expects hides each node's fields behind methods (`GetValue()`, `GetNext()`, `SetNext()`), inserts on the front, and deletes with **two** pointers walking together: `Current` looks at each node, and `Previous` stays one step behind it, so that when `Current` finds the value, the node whose pointer must change is already in hand. The head needs its own case, handled before the loop, for exactly that reason: **the first node has no `Previous`**, so there is nobody's `next` to rewrite, and `Head` itself moves on instead. Watch the code run line by line, including what happens if the two lines of the insert are written the wrong way round:
+
+![[linked-list-class-version.mp4]]
+
+The wrong order is worse than the orphaned tail from the insert above: with `Head = NewNode` written first, `NewNode.SetNext(Head)` makes the new node point **at itself**, so the rest of the list is lost *and* any traversal loops forever.
 
 ## The exam's engine — arrays underneath, and the free list
 
@@ -240,18 +267,18 @@ They buy cheap change with random access, pointer overhead, and (on modern hardw
 
 ### Cambridge 9618 — §19.1 (A2)
 
-- §19.1c: **write** the algorithms — find an item (the `while` walk), insert, delete — with the pointer-order discipline (grip before relinking) and the not-found/empty guards carrying marks. §19.1d: the linked list **built from arrays** (the free-list engine above) *and* serving as the machinery other ADTs are built from — the stack and queue of "The promises, kept by the third engine," and **Binary Trees** *(not yet released)* next.
+- §19.1c: **write** the algorithms — find an item (the `while` walk), insert, delete — with the pointer-order discipline (grip before relinking) and the not-found/empty guards carrying marks. §19.1d: the linked list **built from arrays** (the free-list engine above) *and* serving as the machinery other ADTs are built from — the stack and queue of "The promises, kept by the third engine," and [[Binary Trees]] next.
 - **On dialect:** the paper speaks Cambridge's strict-grammar pseudocode; this card, like the vault, writes real Python — the logic is identical, and [[Cambridge Pseudocode]] owns the translation table.
 
 ### Other boards
 
 - **AP CSA:** linked lists are not in the Java subset — but *reference semantics* (two variables holding the same object) are, and this card's grip-before-relinking reasoning is the cleanest place to learn them.
-- **IB CS:** linked lists were named objects of the legacy HL syllabus's abstract-data-structures topic; in the 2027 outline they sit inside the programming themes rather than as named statements — depth behind that strand.
+- **IB CS (first assessment 2027, higher level only):** linked lists are named twice. **B4.1.2** asks a student to evaluate linked lists, which must include **singly, doubly and circular** lists: sketch them, show insertion, deletion, traversal and search on a diagram, and weigh them against arrays. **B4.1.3** asks for code that builds and uses all three. The singly linked list is developed in full above; the doubly and circular variants are described more briefly under Beyond the syllabus.
 
 ## Beyond the syllabus
 
 > [!info] Give a node a second pointer
-> The whole next chapter of data structures is one sentence away: a node with **two** `next` pointers — call them `left` and `right` — is no longer a chain but a fork, and a structure of forks is a **tree**. **Binary Trees** *(not yet released)* takes that one extra pointer and buys back the thing this card traded away: O(log n) search *through* pointer-machinery, order without geography *and* without the O(n) walk. Then a node with *any number* of pointers is a graph, and the map of structures is complete: array → list → tree → graph, each one loosening the previous one's constraint.
+> The whole next chapter of data structures is one sentence away: a node with **two** `next` pointers — call them `left` and `right` — is no longer a chain but a fork, and a structure of forks is a **tree**. [[Binary Trees]] takes that one extra pointer and buys back the thing this card traded away: O(log n) search *through* pointer-machinery, order without geography *and* without the O(n) walk. Then a node with *any number* of pointers is a graph, and the map of structures is complete: array → list → tree → graph, each one loosening the previous one's constraint.
 
 > [!info] Doubly linked, circular — and the OS's favourite shape
 > Give each node a `prev` as well as a `next` and you can walk both ways and delete a node given only *itself* (no predecessor hunt): the **doubly linked list**. Bend the last node's pointer back to the first and there is no null at all: the **circular list** — the natural shape for anything served in rotation, which is why [[Operating Systems]]' round-robin scheduler runs its processes on exactly this structure. The Linux kernel's most-used data structure is a circular doubly-linked list; the toy in this card is holding up the machine you're reading it on.
@@ -260,12 +287,12 @@ They buy cheap change with random access, pointer overhead, and (on modern hardw
 > The `malloc` under C, the object allocators under Python and Java, the page-frame managers inside operating systems — at the bottom of each sits some elaborated cousin of Example 3's free list: freed memory chained through itself, allocation popping, liberation pushing. When memory "leaks," it means a program lost every pointer to a node without returning it to the free list — the ghost problem at industrial scale. The hunter's pointer-overwrite question ("is anyone still holding the old value?") is, in reverse, the question every garbage collector exists to answer.
 
 > [!info] The engineer's dream — can't we have both?
-> Recall the trade table: the array reaches in O(1), the list changes in O(1), and each pays for its gift with the other's price. The obvious wish is a hybrid where *both* are O(1) — and on those exact terms the wish is provably unbuyable: a structure that allows insert-anywhere lets every later item's position number shift, and keeping "where is item $i$?" instantly answerable while the numbering keeps sliding is the very O(n) bookkeeping the list escaped. (That this is a hard *theorem*, not a failure of imagination, was proved in 1989.) The best any structure does at both jobs is O(log n)-ish: a balanced **binary tree** *(not yet released)* that stores subtree counts, or a **skip list** — a linked list wearing express lanes over express lanes, the engine inside Redis. But there is one hunter's move left: *change what "reach" means.* Give up reach-by-position and ask for reach-by-**key**, and a **hash table** *(not yet released)* welded to a linked list delivers O(1) lookup *and* O(1) ordered insertion and deletion simultaneously. That welded hybrid is not exotic — it is Python's `dict` (insertion-ordered by design since 3.7) and Java's `LinkedHashMap`. You cannot beat the trade on its own terms; you can renegotiate the terms.
+> Recall the trade table: the array reaches in O(1), the list changes in O(1), and each pays for its gift with the other's price. The obvious wish is a hybrid where *both* are O(1) — and on those exact terms the wish is provably unbuyable: a structure that allows insert-anywhere lets every later item's position number shift, and keeping "where is item $i$?" instantly answerable while the numbering keeps sliding is the very O(n) bookkeeping the list escaped. (That this is a hard *theorem*, not a failure of imagination, was proved in 1989.) The best any structure does at both jobs is O(log n)-ish: a balanced [[Binary Trees|binary tree]] that stores subtree counts, or a **skip list** — a linked list wearing express lanes over express lanes, the engine inside Redis. But there is one hunter's move left: *change what "reach" means.* Give up reach-by-position and ask for reach-by-**key**, and a [[Hash Tables|hash table]] welded to a linked list delivers O(1) lookup *and* O(1) ordered insertion and deletion simultaneously. That welded hybrid is not exotic — it is Python's `dict` (insertion-ordered by design since 3.7) and Java's `LinkedHashMap`. You cannot beat the trade on its own terms; you can renegotiate the terms.
 
 ## Connections
 
 - **Builds on:** [[Arrays]] — the contiguous convention this card un-welds, and the raw material of the exam's `data[]`/`next[]` engine; [[Stacks and Queues]] — the bay's opener: the ADT-as-promise thesis, the ghost lesson, and the −1 keystone this card's null continues.
-- **Leads to:** **Binary Trees** *(not yet released)* — one more pointer per node and the chain forks; search comes back at O(log n).
+- **Leads to:** [[Binary Trees]] — one more pointer per node and the chain forks; search comes back at O(log n).
 - **Kindred:** [[RAM and the Memory Hierarchy]] — the flat sea of cells this card finally uses honestly, and the cache hierarchy that gives arrays their modern revenge; [[Operating Systems]] — free lists in the allocator, circular doubly-linked lists in the scheduler; [[Recursion]] — a linked list is a recursively defined object (a list is a node whose `next` is a list), and recursive traversals fall out of that definition.
 
 ## LaTeX Reference
@@ -274,4 +301,4 @@ They buy cheap change with random access, pointer overhead, and (on modern hardw
 |--------|-------|-------|
 | $O(1)$ | `O(1)` | insert/delete once positioned — the structure's purchase |
 | $O(n)$ | `O(n)` | the traversal walk — the structure's price |
-| $O(\log n)$ | `O(\log n)` | what **Binary Trees** *(not yet released)* buys back with one more pointer |
+| $O(\log n)$ | `O(\log n)` | what [[Binary Trees]] buys back with one more pointer |

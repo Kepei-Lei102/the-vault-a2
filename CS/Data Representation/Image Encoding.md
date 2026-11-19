@@ -1,6 +1,7 @@
 ---
 chinese: 图像编码 (túxiàng biānmǎ)
 prerequisites:
+  - "[[Layers]]"
   - "[[Number Bases]]"
   - "[[Text Encoding]]"
   - "[[Storage Units (Vocab)]]"
@@ -13,6 +14,7 @@ tags:
   - level/A-Level
   - curriculum/Cambridge-0478
   - curriculum/Cambridge-9618
+  - curriculum/IB-CS
   - syllabus/0478-1-2
   - syllabus/9618-1-2
   - type/deep
@@ -30,6 +32,10 @@ tags:
 Zoom into any photo, far enough, and it shatters into coloured squares. Now zoom into this sentence — crisp at 400%, crisp at 4000%. Same screen, same pinch gesture, two completely different fates. Why does a photograph run out of detail while a letterform never does? Because the two are *remembered differently* — and by the end of the ride you'll know exactly what each one wrote down.
 
 ## 中文锚点
+
+把手机里的照片一直放大，画面会碎成一个个小色块；把 PDF 里的文字一直放大，笔画却永远锐利。差别在于存下来的是什么。照片存的是一格一格的采样：相机在几百万个点上各量了一次颜色，把这些数字记了下来，所以放大时并没有新的东西可看，只是把同样的方格画大了。PDF 里的文字存的却是画法：从这里到那里画一条曲线，填成黑色。放大就是按新的尺寸把画法再执行一遍，每次都是重新画出来的。照片只能存采样，因为现实世界不附带画法；而 logo、字体、示意图是人设计出来的，画法本来就有，存画法更划算。
+
+### 术语对照 (Terms)
 
 **图像编码 (túxiàng biānmǎ)** = image encoding：把一幅图变成数字的两种哲学——
 
@@ -167,11 +173,11 @@ The pixel is the *image's* atom — but it is not the screen's, and not the simu
 
 ## Exam Notes
 
-### Cambridge 0478 (IGCSE)
+### Cambridge 0478 (IGCSE — Paper 1)
 
 **§1.2.3 — image representation.** Expect to: explain that an image is stored as **pixels**, each encoded in binary; use **resolution** (pixels wide × high) and **colour depth** (bits per pixel); state the effect of increasing either on **quality and file size** (both increase — and file size = width × height × depth is the §1.3.2 calculation). Common ask: "why does increasing colour depth increase file size?" — more bits *per pixel*, same number of pixels.
 
-### Cambridge 9618 (A-Level)
+### Cambridge 9618 (AS — Paper 1)
 
 **§1.2 Multimedia — Graphics.** The 0478 material plus, by name: the **file header** (dimensions, depth, format — stored before the pixel data); **image resolution vs screen resolution** as distinct terms; file-size *estimation* (pixel data + header); the effects of changing resolution/depth on quality **and** size; and vector graphics via the exact triad — **drawing list** (the ordered list of objects), **drawing object** (line, circle, rectangle…), **property** (position, radius, fill…). Be ready to **justify bitmap vs vector for a given task** — argue from *source* (measured vs designed) and *use* (fixed size vs any size), not from a memorised "vector better."
 
@@ -191,10 +197,15 @@ The pixel is the *image's* atom — but it is not the screen's, and not the simu
 
 ### IB CS (2027)
 
-Image representation is **not a named statement**: A1.2's published wording stops at binary/hexadecimal conversion and logic gates processing encoded data — pixels, bitmaps, vectors and colour depth are not listed. Treat this card as depth behind "encoded data", not examinable IB content.
+**A1.2.2 — binary storage of data (SL and HL).** The full first-assessment-2027 guide, printed p.29, explicitly includes the mechanisms for storing **images, audio and video**, alongside integers, strings and characters. Explain how pixel values are represented in binary and how the representation lets an image be stored and retrieved. The guide does not separately enumerate Cambridge’s bitmap/vector comparison, drawing-list terminology or file-size question forms: distinguish that useful depth from the actual IB wording.
+
+### Not examined on AP Computer Science A
+
+The Fall 2025 CED does not prescribe bitmap/vector representation or image colour-depth calculations as course content. A program may process numbers representing media, but that does not make the media-encoding theory a named CSA requirement.
 
 ## Connections
 
+- **Story:** [[Layers]] — how separately made images became editable compositions, from the darkroom to the desktop.
 - **Prerequisite:** [[Number Bases]] — a pixel's colour *is* three bytes in hex; `#2563EB` is raw image data you've been reading all along.
 - **Prerequisite:** [[Text Encoding]] — the treaty lesson repeats: pixel bytes don't announce their meaning, so the file header declares it; and text vs image is *convention* vs *measurement*.
 - **Prerequisite:** [[Storage Units (Vocab)]] — the file-size formula and the unit ladder this topic's calculations run on.

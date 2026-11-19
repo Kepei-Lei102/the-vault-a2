@@ -8,6 +8,7 @@ prerequisites:
   - "[[Intersection]]"
   - "[[Union]]"
 leads_to:
+  - "[[Java Control Flow]]"
   - "[[Karnaugh Maps]]"
   - "[[Half-Adder and Full-Adder]]"
   - "[[Flip-Flops]]"
@@ -18,7 +19,6 @@ tags:
   - domain/digital-circuits
   - level/A-Level
   - curriculum/Cambridge-9618
-  - curriculum/A-Level
   - syllabus/9618-15-2
   - type/deep
   - type/theorem
@@ -43,7 +43,9 @@ That guarantee is the whole point. [[Logic Gates]] proved (via the DNF algorithm
 
 ### 中文锚点
 
-**布尔代数 (bù'ěr dàishù)** = 在 $\{0,1\}$ 上，用 **与 ($\cdot$)、或 ($+$)、非 ($\overline{\phantom{A}}$)** 三种运算构成的代数。核心动作不是"算出一个值"，而是**在真值表不变的前提下把表达式变形、化简**——用更少的门实现同一个功能。
+网店写着：“会员满一百元免邮，或者会员用券免邮。”你可以把它说得更简洁：“先得是会员，再看是否满一百元或用了券。”无论哪位顾客来结账，改写前后，免不免邮的结果都一样。**布尔代数做的就是这种整理：判断结果不变，把重复的检查合并成一次。** 规则说起来省事了，交给电路去判断时，也可能少用几个逻辑门。
+
+### 术语对照
 
 | English | 中文 | 一句话 |
 |---|---|---|
@@ -54,9 +56,7 @@ That guarantee is the whole point. [[Logic Gates]] proved (via the DNF algorithm
 | involution | 对合律（双重否定） | 否定两次转回来 |
 | De Morgan's laws | 德摩根定律 | **拆杠翻号**：拆开长横线就要把 $\cdot$ 换成 $+$（反之亦然） |
 | duality | 对偶原理 | 把 $+\leftrightarrow\cdot$、$0\leftrightarrow1$ 全换掉，定理仍成立——所以定律成对出现 |
-| minimisation | 化简 | 用定律把 DNF 那种臃肿电路压到最少门数 |
-
-中文教材通常只要求"记住真值表 + 会画门电路"，而 A-Level 9618 §15.2 真正的考点是**用代数定律化简**，以及判断两个电路是否等价。
+| minimisation | 化简 | 用定律寻找更简洁的等价逻辑实现 |
 
 ---
 
@@ -101,7 +101,7 @@ That **second distributive law**, $A + BC = (A+B)(A+C)$, is the one with no arit
 
 $$A + AB = A \qquad\qquad A(A+B) = A \qquad\text{(absorption)}$$
 $$A + \overline{A}B = A + B \qquad\qquad A(\overline{A}+B) = AB \qquad\text{(absorption, 2nd form)}$$
-$$AB + \overline{A}C + BC = AB + \overline{A}C \qquad\text{(consensus — the middle term is redundant)}$$
+$$AB + \overline{A}C + BC = AB + \overline{A}C \qquad\text{(consensus — the BC term is redundant)}$$
 
 ### Why they hold — two proofs instead of a table
 
@@ -239,20 +239,25 @@ A **canonical** form lists every variable in every term (each term is a *minterm
 
 ## Exam Notes
 
-### Cambridge 9618 (A Level, §15.2)
-The examinable core. You must (1) know the Boolean identities — De Morgan, distributive, absorption, the constant/complement laws; (2) **simplify a given Boolean expression** using them, showing steps; (3) decide whether **two logic circuits are equivalent** (simplify both, compare); (4) move between a logic circuit, its Boolean expression, and its truth table. De Morgan and absorption carry most marks. The systematic minimiser examined alongside the identities is the [[Karnaugh Maps|Karnaugh map]]; the stateful elements ([[Flip-Flops|flip-flops]]) are the *other* half of §15.2 and a separate axis.
+### Cambridge 9618 (A Level), §15.2 Boolean Algebra and Logic Circuits
 
-### Cambridge 0478 (IGCSE)
-Logic **gates** are examined (§10), but Boolean **algebra** — the identities and simplification — is **not**. IGCSE stops at drawing circuits and truth tables; the algebra is an A-Level escalation. (See [[Logic Gates]].)
+"Show understanding of Boolean algebra": "Understand De Morgan's laws"; "Perform Boolean algebra using De Morgan's laws"; "Simplify a logic circuit/expression using Boolean algebra". The same row asks for truth tables of circuits "including half adders and full adders" (**Half-Adder and Full-Adder** *(not yet released)*), SR and JK flip-flops ([[Flip-Flops]]) and Karnaugh maps ([[Karnaugh Maps]]). An exam question gives an expression or a circuit and asks for a step-by-step simplification, or asks whether two circuits are equivalent; the identities must be applied by name.
 
-### Other A-Level boards (AQA / OCR / Edexcel)
-All examine Boolean simplification and De Morgan, very similarly to 9618. A standard 5–6 mark question: "simplify this expression" or "show these two circuits are equivalent."
+### Cambridge 0478 (IGCSE), §10 Boolean logic
 
-### AP
-AP CSA is Java/OOP, not circuit design, so it does **not** examine Boolean algebra as such — but topic 2.6 ("comparing Boolean expressions") uses **De Morgan informally** to rewrite compound `if` conditions: `!(a && b)` becomes `!a || !b`. Worth knowing in that code form.
+Examines gates, not algebra: "Identify and use the standard symbols for logic gates"; "Define and understand the functions of logic gates" (NOT, AND, OR, NAND, NOR, XOR, "the binary output produced from all the possible binary inputs"); "Use logic gates to create given logic circuits from a problem statement, logic expression, truth table", where "Circuits must be drawn for the statement given, without simplification" and are "limited to a maximum of three inputs and one output". The identities and simplification are an A-level escalation ([[Logic Gates]]).
 
-### IB Computer Science
-Not a named statement: IB's A1.2 logic content stops at **gates and truth tables** ("logic gates processing encoded data") — the algebraic layer here is the Cambridge 9618 §15.2 extension. As with AP, De Morgan still earns its keep informally whenever IB code rewrites a compound condition.
+### IB Computer Science (2027 guide), A1.2.4 and A1.2.5
+
+A1.2.4 "Construct and analyse truth tables" lists "Truth tables derived from logic diagrams to aid the simplification of logical expressions" and "Karnaugh maps and algebraic simplification to simplify output expressions"; A1.2.5 "Construct logic diagrams" lists "Boolean algebra rules to simplify complex logic diagrams and expressions". Examined, by name.
+
+### AP Computer Science A, Unit 2
+
+Topic 2.5 "Compound Boolean Expressions" and Topic 2.6 "Comparing Boolean Expressions": the course description says that "De Morgan's law can be applied to Boolean expressions" to show two expressions equivalent, so `!(a && b)` and `!a || !b` are examined as Java, never as circuits.
+
+### Where this is *not* examined, and what is unverified
+
+AP Computer Science A examines no circuits; the AP Computer Science Principles description is not on file. The domestic UK A-level boards (AQA, OCR, Edexcel) named in an earlier version are not on file; their treatment is standard but unverified here.
 
 ---
 

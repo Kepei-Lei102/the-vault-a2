@@ -2,6 +2,8 @@
 chinese: 图灵测试 (Túlíng cèshì)
 prerequisites:
   - "[[Turing Machine]]"
+  - "[[Artificial Intelligence]]"
+  - "[[The Perceptron and Move 78]]"
 leads_to: []
 tags:
   - subject/computer-science
@@ -16,6 +18,7 @@ tags:
   - misconception/turing-test-measures-intelligence
   - misconception/passing-means-conscious
   - misconception/turing-test-is-a-formal-benchmark
+  - level/enrichment
 ---
 
 # The Turing Test 图灵测试
@@ -43,9 +46,12 @@ The gendered original is not a historical curiosity — it carries the whole poi
 
 ## 中文锚点
 
-**图灵测试**是图灵 1950 年论文《计算机器与智能》提出的判定标准。他认为「机器能思考吗」这个问题太含糊、无法用实验回答，于是换成一个**能观测**的问题：让一位**裁判 C** 只通过**打字**（不看脸、不听声音）分别与两位隐藏者对话——一个是**人**，一个是**机器**——裁判要分辨哪个是机器。如果裁判的判断**不比瞎猜更准**，机器就**通过了测试**。
+你在网店里找在线客服，聊了几句，心里开始犯嘀咕：对面到底是人还是机器人？留意一下你接下来会怎么做。你看不到对面那一位的"里面"，于是只好试探：问一个古怪的问题，开个玩笑，突然换个话题，看它怎么接。1950 年，图灵把这个场景几乎原样搬进了一个定义里。他觉得"机器能思考吗"这个问题太含糊，做什么实验都回答不了，于是换成一个可以检验的问题：让一位裁判只通过打字，分别和一个藏起来的人、一台藏起来的机器聊天，看裁判分不分得出谁是谁。如果裁判的判断不比瞎猜更准，机器就算通过了测试。他更深的一层意思让人有点不自在：你判断别人有没有思想，靠的其实也只有这一种证据。你从来没能看进任何人的脑子，你看到的只是他们说了什么、做了什么。最有名的反驳是：表现得像懂了，不一定就是真的懂，就好比一个人照着一本汉字规则手册查表作答，可以答得滴水不漏，却一个汉字也不认识。今天的聊天机器人已经能骗过很多裁判，这说明了它们做得到什么，却没有回答它们"里面"到底有没有发生什么。
 
-关键在于：图灵把「思考」从一个关于**内在本质**的问题，换成了一个关于**外在行为**的问题（这叫**操作主义**）。深层主张是——我们判断**别人**是否有思想，靠的也只是对方的言行，从来没有别的证据。反对意见里最有名的是塞尔的**中文房间**（见下）：它指出「能对话」未必等于「真的懂」——语法（符号操作）不等于语义（理解）。现代大语言模型（LLM）在受控实验里已能让多数裁判分辨不出，所以**就图灵的标准而言，测试已被通过**;但这究竟证明了什么，仍是开放问题。
+## 术语对照 (Terms)
+
+图灵测试 Turing test · 模仿游戏 imitation game · 裁判 judge · 操作主义 operationalism · 中文房间 Chinese room (Searle) · 语法与语义 syntax and semantics · 大语言模型 large language model
+
 
 ## What Turing was really doing — the burden-of-proof flip
 
@@ -147,18 +153,13 @@ What did passing prove? Less than Turing's framing promised — and that is the 
 
 ## Exam Notes
 
-The Turing Test is **not a named, examinable topic** on Cambridge IGCSE 0478 or A-Level 9618 in the way the [[CPU Architecture and the Fetch-Execute Cycle|von Neumann model]] is. It belongs to the **philosophy of artificial intelligence**, and it earns its place here as the natural companion to [[Turing Machine]] (Turing's "other machine") and as the conceptual anchor for any AI unit:
+The Turing Test is **not a named, examinable topic on any board on file**. It belongs to the philosophy of artificial intelligence, and the boards examine AI as method, not as philosophy of mind.
 
-- **Cambridge A-Level 9618** — the A2 **Artificial Intelligence** material (types of AI, machine learning, neural networks) is where this card's *"can a machine think?"* framing and the Lovelace/learning-machine point give students the history their syllabus assumes but doesn't teach.
-- **AP Computer Science Principles** — the *Impact of Computing* big idea raises exactly these questions (machine intelligence, its limits, its social effect); the Turing Test is the standard entry point.
-- **University** — a fixture of first courses in AI, philosophy of mind, and cognitive science. The Turing Test, the Chinese Room, Strong vs Weak AI, functionalism, and the symbol-grounding problem are a single connected unit, and this card is its on-ramp.
-- **General literacy** — in the age of LLMs this is no longer abstract. Knowing what the test does and doesn't establish is the difference between *"the AI is alive"* and *"the AI is indistinguishable in conversation, which is a fact about behaviour."*
-
-### IB Computer Science (first assessment 2027)
-
-- **Not a named statement, but closer to the syllabus than the Cambridge boards.** Theme A's fourth strand is **A4 Machine Learning**, and two of its sub-topics sit directly against this material: **A4.1 Machine learning fundamentals**, where *"can a machine think?"* is the question the whole strand presupposes and never states, and **A4.4 Ethical considerations**, where the behaviour-versus-understanding distinction is the load-bearing one — an argument about whether a system *understands* its outputs is an argument about the Chinese Room whether or not anyone names it.
-- What is examined there is machine learning as **method** (approaches, preprocessing, evaluation, the HL-only A4.2 and A4.3), not philosophy of mind. So nothing on this card is directly assessed. It is the conceptual on-ramp: a student who has read it can say *why* "the model passed a benchmark" is a claim about behaviour rather than about cognition, which is exactly the sort of qualification A4.4 rewards.
-- No `syllabus/IB-CS-A4` tags are carried, correctly — the card supports the strand rather than closing any statement in it.
+- **Cambridge 9618, §18.1 Artificial Intelligence** — types of AI, machine learning and neural networks are examined ([[Artificial Intelligence]]); "can a machine think?" and the Lovelace objection are the framing behind them, not a row. Cambridge 0478 §6 examines AI and robotics at IGCSE depth with the same boundary.
+- **IB Computer Science (2027), A4 Machine Learning** — A4.1 fundamentals and the HL-only A4.2 and A4.3 examine machine learning as method (approaches, preprocessing, evaluation); nothing on this card is directly assessed, which is why the card carries no A4 syllabus tag. It is the conceptual on-ramp: a student who has thought about what "indistinguishable in conversation" establishes reads the ML strand with the right suspicion.
+- **AP Computer Science Principles** is often said to raise machine intelligence under its impact-of-computing big idea; that course description is not on file, so the claim is unverified here. AP Computer Science A does not mention it.
+- **University** — a fixture of first courses in AI, philosophy of mind and cognitive science; the Turing Test, the Chinese Room, strong versus weak AI, functionalism and symbol grounding form one connected unit.
+- **General literacy** — in the age of language models this is no longer abstract: the test establishes indistinguishability in conversation, which is a fact about the judge as much as the machine.
 
 ## Connections
 
@@ -168,6 +169,8 @@ The Turing Test is **not a named, examinable topic** on Cambridge IGCSE 0478 or 
 - **The shared hard edge:** [[Gödel's Incompleteness Theorems]] — the Mathematical Objection (#3) rests on it; Turing's reply (humans share the limit) is the bridge.
 - **What LLMs are made of:** [[Information Theory]] — a language model is Shannon's 1948 framework at scale (cross-entropy, perplexity); the thing now passing the test is built out of the bit.
 - **How they reason:** [[Chain of Thought]] — the card spans both senses of the phrase: Pólya's human reasoning chain, and the LLM *"think step by step"* prompting (Google, 2022) that sharpened the very models now clearing Turing's bar.
+- **Prerequisite:** [[Artificial Intelligence]] — the machinery the question is asked about: expert systems, machine learning, neural networks and back propagation, built from scratch and measured.
+- **Story:** [[Stories/The Perceptron and Move 78]] — move 37 as the case the test never anticipated: a machine creative in a way its makers did not put in.
 
 ## Glossary / Notation Reference
 

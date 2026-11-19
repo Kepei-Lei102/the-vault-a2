@@ -30,6 +30,10 @@ tags:
 
 ## 中文锚点
 
+你正在写作业，门铃响了。你不会装作没听见，你也用不着每隔一分钟就跑到门口去看看有没有人。你用手指按住刚写到的那一行，去把门口的事处理完，回来，从那一行接着写，好像什么都没发生过。处理器跟它的各种设备打交道，用的也是这个办法。它不会一遍又一遍地去问键盘“有键按下了吗？有键按下了吗？”，那样几乎所有的时间都白白浪费了。它只管干自己的活，哪个设备需要照应，就发一个信号过来。处理器这时把自己刚才做到哪儿原原本本地记下来，运行一小段专门对付这个设备的程序，再把记下来的东西恢复原样，继续往下做。关键的正是这一存一恢复：被打断的程序绝不能察觉自己被打断过。还有，跟在家里一样，有的铃比别的铃更要紧：哪怕你正在门口，火警响了也得先管火警。
+
+### 术语对照 (Terms)
+
 | English | 中文 | one-line meaning |
 |---|---|---|
 | interrupt | 中断 | a signal that makes the CPU suspend its current program and attend to something else |
@@ -75,11 +79,13 @@ Notice the last two rows: **not every interrupt comes from hardware.** A program
 Here is the full sequence, the exam's favourite six-marker, told once with every step earning its place:
 
 1. **The signal is raised.** A device pulls the interrupt line on the control bus. Nothing else happens yet — the CPU is mid-instruction and pays no attention.
-2. **The current instruction completes.** The CPU *never* abandons an instruction halfway — an instruction is atomic, finished or not-started, exactly as you finish the sentence before answering the door. (Half-executed instructions would leave registers in states no ISR could safely restore.)
+2. **The current instruction completes.** In this teaching model, the CPU completes the current instruction before servicing the interrupt, leaving a well-defined state to save. This is not a universal claim that every real instruction is indivisible.
 3. **The check.** At the end of **every** fetch–decode–execute cycle, the CPU examines the interrupt flag. The cycle you learned is really fetch → decode → execute → ***check*** — a fourth beat so routine it is drawn as part of the loop, and the honest answer to "*when* are interrupts detected?"
 4. **The scene is protected (现场保护).** If the flag is set (and not masked), the CPU pushes its state onto [[The Stack|the stack]]: the program counter — the bookmark itself — plus the working registers and status flags. Everything needed to stand in this exact spot again.
 5. **The vector table is consulted.** Each interrupt source has a number; the number indexes the **interrupt vector table** in memory, which holds the *address* of the matching **ISR**. The CPU loads that address into the PC and jumps. (A table, not wiring — adding a new device means writing one address into memory, the stored-program idea paying out again.)
 6. **The ISR runs, then returns.** The routine does its short, specific job — read the scan code, acknowledge the disk — and ends with a return-from-interrupt instruction: the saved state pops off the stack, the PC gets its old value back, and the original program resumes **as if nothing had happened**. It never knows it was paused.
+
+**Beyond the simple cycle:** some long instructions are restartable. An x86 repeating string operation can be suspended between iterations, with its remaining count and positions preserved, then resumed after the interrupt. [Intel’s instruction documentation](https://cdrdv2-public.intel.com/858441/252046-080-sdm-change-document.pdf) specifies this behaviour. [[CISC vs RISC]] explains why long instructions complicate interrupt latency; the essential promise is a resumable state, not universal indivisibility.
 
 The program's ignorance is the design's triumph: interruption is invisible to the interrupted. Every program you have ever run was suspended thousands of times mid-flight, and none of them ever noticed.
 

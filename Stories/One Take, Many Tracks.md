@@ -3,6 +3,8 @@ chinese: 一遍过与多轨录音 (yī biàn guò yǔ duō guǐ lùyīn)
 prerequisites: []
 leads_to:
   - "[[Sound Encoding]]"
+teach_together:
+  - "[[Layers]]"
 tags:
   - type/story
   - subject/computer-science
@@ -156,9 +158,11 @@ Read the whole card at once and the shape is clear. Each act bought a new freedo
 
 ## Where this surfaces in the vault
 
+- **[[Layers]]** — the visual companion: combination printing, repeated performances, multiplane animation and editable image projects.
+
 - **[[Sound Encoding]]** — dual residency. That card carries the machinery: sampling, quantisation, Nyquist, and the 44,100-videotape hack that launched digital audio; the analogue-copies-decay vs digital-copies-are-exact asymmetry that powers Act VI is its samples-are-numbers thesis, acted out by history.
 - **[[Information Theory]]** — *why* the hundredth digital copy is identical to the first: discrete symbols reject small errors, which analogue ribbons cannot. Generation loss is what a channel does to you without Shannon's armour.
-- **[[Parallel and External Sorting]]** — in the same decades, computing learned to work *around* sequential media (the tape-based external sorts) while studios learned to make art around them. Same constraint, two cultures, and both escaped to random access together.
+- ****Parallel and External Sorting** *(not yet released)*** — in the same decades, computing learned to work *around* sequential media (the tape-based external sorts) while studios learned to make art around them. Same constraint, two cultures, and both escaped to random access together.
 - **[[Stories/The Loudness War]]** — the direct sequel, and the boundary dissolving from the other end. Its Act V defines mixing against mastering because the story needs the distinction to assign blame; Act VII here watches that same distinction stop describing how music is actually made.
 - **[[Stories/The War of the Currents]]** — the sibling arc: same Edison, same lesson that infrastructure fights are decided by physics and paid for in showmanship.
 

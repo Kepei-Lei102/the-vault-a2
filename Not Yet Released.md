@@ -3,8 +3,8 @@
 > These cards **exist** and are written. They are simply not part of your
 > course yet — they arrive as we reach them.
 
-> **Edition** `student-2026-09-02` · built 2026-09-04 from commit `47b4330` + uncommitted changes  
-> 366 cards · 455 diagrams · 75 explainers · 110 illustrations
+> **Edition** `student-2026-11-19` · built 2026-11-19 from commit `3ea237a`  
+> 468 cards · 735 diagrams · 152 explainers · 162 illustrations
 
 ---
 
@@ -23,12 +23,27 @@ the agent reading this vault knows the difference.
 
 ## CS
 
+- Affective Computing
+- Anatomy of a Tech Stack
 - Balanced Trees
-- Binary Trees
 - Clock Domains and Metastability
-- Graphs
+- Data Protection and Privacy
+- Digital Audio Workstation
+- Digital Currency and Blockchain
 - Half-Adder and Full-Adder
-- Hash Tables
+- Heaps and Priority Queues
+- How a Chip Is Made
+- How a Language Model Works
+- Java Arrays and ArrayList
+- Java Classes
+- Java Control Flow
+- Java Objects, References and Strings
+- Java Values and Expressions
+- Memory Allocation and the Heap
 - NoSQL and Distributed Data
-- Relational Databases
-- SQL
+- Parallel and External Sorting
+- Privacy-Preserving Computation
+- RAID
+- The GPU — From Triangles to Tensors
+- The Modern CPU vs the Textbook Model
+- Version Control

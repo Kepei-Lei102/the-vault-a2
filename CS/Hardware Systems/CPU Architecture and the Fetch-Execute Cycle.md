@@ -5,6 +5,7 @@ prerequisites:
   - "[[Number Bases]]"
   - "[[Von Neumann machine]]"
 leads_to:
+  - "[[The Modern CPU vs the Textbook Model]]"
   - "[[Pipelining and Simultaneous Multithreading]]"
   - "[[Assembly Language]]"
   - "[[RAM and the Memory Hierarchy]]"
@@ -33,7 +34,7 @@ tags:
 
 # CPU Architecture and the Fetch-Execute Cycle 处理器架构与取指执行周期
 
-> *A CPU does exactly one thing, a few billion times a second: it fetches the next instruction from memory, works out what it means, and carries it out. Everything else — every app, every game, every model — is that one loop, repeated. This card opens the box and names the parts: the registers that hold the work in progress, the buses that move it, and the **stored-program** idea that lets a machine be reprogrammed instead of rewired.*
+> *A CPU does exactly one thing, a few billion times a second: it fetches the next instruction from memory, works out what it means, and carries it out. Everything else — every app, every game, every model — is that one loop, repeated. Inside are the registers that hold the work in progress, the buses that move it, and the **stored-program** idea that lets a machine be reprogrammed instead of rewired.*
 
 ## Definition — the stored-program machine
 
@@ -48,21 +49,19 @@ The deep idea — **the program is just data in memory** — is what makes a com
 
 ### 中文锚点
 
-**处理器架构（冯·诺依曼架构 von Neumann）**：一块**主存储器同时存放程序和数据**（stored-program，存储程序），CPU 不断地**取指（fetch）→ 译码（decode）→ 执行（execute）**。CPU 四大部分：**控制单元 CU**（指挥）、**算术逻辑单元 ALU**（运算，由 [[Logic Gates|逻辑门]] 搭成）、**寄存器**（CPU 内部极快的小存储）、**总线**（地址/数据/控制）。
-
-**核心思想**：*程序就是存储器里的数据* —— 换程序即可改变功能，无需重新接线。这正是图灵 1936 年"通用机"（[[Turing Machine]]）的物理实现，由冯·诺依曼 1945 年给出可建造的架构（[[Von Neumann machine]]）。
-
-**取指-执行周期**的寄存器层面（见下文）：`PC→MAR`、读内存`→MDR→CIR`、`PC+1`、译码、执行。常见误区：**PC 存的是下一条指令的*地址*，不是指令本身**。
+同一台电脑，刚才还在跑游戏，打开另一个程序，就开始修照片了。你没有拆开机箱换零件，变的是它从内存里读到的指令。就像同一间厨房换一份菜谱，原来的锅灶就能做出另一道菜；处理器不断取来一条指令，认出该做哪种操作，再把它执行掉。它并不懂“我要修得好看一点”，只能照着程序规定的步骤做。电脑能换着干活，靠的是把做事的步骤也存进机器里，让同一套硬件反复读取。
 
 ## The von Neumann model — components and buses
 
 ![[vonneumann-cpu.svg|720]]
 
+A **microprocessor** is a CPU implemented on a single integrated circuit. Main memory is also called the **immediate access store (IAS)**: it holds the instructions and data currently available to the processor, unlike backing storage such as an SSD. “Immediate” distinguishes direct access by the processor from loading a file; it does not mean zero delay.
+
 The CPU and main memory (RAM) are separate; they talk over three **buses**:
 
 | Bus | Direction | Carries | Width matters because… |
 |-----|-----------|---------|------------------------|
-| **Address bus** (地址总线) | one-way (CPU → memory) | the address to read/write | $n$ lines address $2^n$ locations — a 32-bit address bus reaches 4 GB |
+| **Address bus** (地址总线) | one-way (CPU → memory) | the address to read/write | $n$ lines address $2^n$ locations — a 32-bit address bus reaches 4 GiB **if each location holds one byte** |
 | **Data bus** (数据总线) | two-way (bidirectional) | the data or instruction itself | wider bus = more bits moved per transfer (often = the word size) |
 | **Control bus** (控制总线) | two-way | control signals (read/write, clock tick, interrupt) | coordinates *when* and *which way* data moves |
 
@@ -70,7 +69,7 @@ The single shared path between CPU and memory is the architecture's one weakness
 
 ## The registers — where the work in progress lives
 
-Registers are the fastest storage in the machine — faster than cache, far faster than RAM — because they sit *inside* the CPU. The five (plus a status register) you must know:
+Registers are the fastest storage in the machine — faster than cache, far faster than RAM — because they sit *inside* the CPU. The named registers have distinct jobs:
 
 | Register | Name | Holds |
 |----------|------|-------|
@@ -79,7 +78,10 @@ Registers are the fastest storage in the machine — faster than cache, far fast
 | **MDR** | Memory Data Register (存储器数据寄存器) | the data or instruction just read from (or about to be written to) memory |
 | **CIR** | Current Instruction Register (当前指令寄存器) | the instruction currently being decoded and executed |
 | **ACC** | Accumulator (累加器) | the working value — the result of the latest ALU operation |
+| **IX** | Index Register (变址寄存器) | an offset added to a base address to walk through array elements — see [[Assembly Language]] |
 | **Status register** | flags (状态寄存器) | condition flags — carry, zero, negative, **overflow** (→ [[Overflow and Underflow]]) |
+
+**General-purpose registers** can hold a range of operands and intermediate results. **Special-purpose registers** have architectural jobs: PC selects the next instruction, MAR addresses memory, and CIR holds the current instruction. An accumulator is a working register with a designated arithmetic role in this teaching architecture; register names and restrictions vary between processors.
 
 > **The single most common mistake:** the **PC holds an *address*, the CIR holds the *instruction*.** The PC is a bookmark ("read next from here"); the CIR is the page you're currently reading. And **MAR vs MDR**: the MAR is the *address* (which mailbox), the MDR is the *contents* (what's in it).
 
@@ -104,6 +106,18 @@ This is the loop. Follow the data moving between registers — that register-tra
 Then the cycle repeats from the (now incremented) PC — billions of times a second.
 
 > **Jumps are where the PC earns its name.** A branch instruction like `JMP x` simply does `operand x → PC`: the next fetch reads from `x` instead of the next-in-line address. That one move is the entire basis of loops, `if`, and function calls — and it is exactly the *control hazard* the [[Pipelining and Simultaneous Multithreading|pipeline]] has to predict, because the CPU wants to fetch the next instruction *before* it knows where the jump leads.
+
+## Ports — connecting the processor's world to yours
+
+A **port** connects a peripheral to the computer. Its connector shape and its signalling rules are different things: a plug fitting does not establish every capability.
+
+| Port | What it carries | Typical use and limitation |
+|---|---|---|
+| **USB** | digital data and, where supported, electrical power | keyboards, storage, cameras and charging; speed and power depend on the USB version, cable and devices |
+| **HDMI** | digital video and audio | a laptop connected to a monitor, television or projector; one connection can carry picture and sound |
+| **VGA** | analogue video | an older monitor or projector; audio needs a separate connection |
+
+A classroom laptop can show a film through VGA while the room stays silent: the video connection carries **no audio**. Converting digital HDMI output to analogue VGA also requires signal conversion, not merely a differently shaped plug.
 
 ## Clock speed, cores, and cache (briefly)
 
@@ -167,28 +181,28 @@ Watch the registers fill and the values ride the buses through all three instruc
 
 ## Exam Notes
 
-### Cambridge 0478 (IGCSE) — §3.1
-The core IGCSE hardware topic. You should be able to:
-- State that the CPU follows the **von Neumann architecture** and name its parts (**CU, ALU, registers, buses**).
-- Name and give the purpose of each register — **PC, MAR, MDR, CIR, ACC** — and the three **buses** (address / data / control), including that address-bus width sets how much memory can be addressed.
-- **Describe the fetch–decode–execute cycle** in register-transfer terms (the `PC→MAR→…` steps above) — a very common extended-answer question.
-- Explain how **cores, cache, and clock speed** affect performance (§3.1.3), and what **instruction sets / machine code** are (§3.1.4). *(Embedded systems, §3.1.5, is a separate topic.)*
+### Cambridge 0478 (IGCSE), §3.1 Computer architecture
 
-### Cambridge 9618 (A Level) — §4.1
-Everything above at more depth, plus: the **status register** and its flags, the role of each register *within* the cycle, and how the buses coordinate a transfer. (Assembly language and addressing modes are **§4.2** → [[Assembly Language]].) The performance half (pipelining, parallel processing) is **§15.1** → [[Pipelining and Simultaneous Multithreading]].
+1(a) "Understand the role of the central processing unit (CPU) in a computer"; 1(b) "Understand what is meant by a microprocessor" ("a type of integrated circuit on a single chip"). 2(a) "Understand the purpose of the components in a CPU, in a computer that has a Von Neumann architecture", the notes listing "units: arithmetic logic unit (ALU) and control unit (CU)", "registers: program counter (PC), memory address register (MAR), memory data register (MDR), current instruction register (CIR) and accumulator (ACC)", and "buses: address bus, data bus and control bus". 2(b) "Describe the process of the fetch–decode–execute (FDE) cycle, including the role of each component in the process": fetched from RAM, stored in specific registers, transmitted on the buses. 3: "core, cache and clock" and how they affect performance. 4: the instruction set as "a list of all the commands that can be processed by a CPU", in machine code. Embedded systems are point 5 ([[Embedded Systems]]).
 
-### IB Computer Science — A1.1 Computer hardware and operation
-The CPU, its components, and the **fetch–decode–execute cycle** sit at the centre of A1.1. The register-transfer trace and the von Neumann model are the working vocabulary for A1.1 questions on how a processor executes instructions; cores/cache/clock speed answer the "factors affecting performance" strand. IB does not require the Cambridge register mnemonics (PC/MAR/MDR/CIR/ACC) by name, but naming them and tracing a transfer is exactly the justified detail its extended responses reward.
+### Cambridge 9618 (AS Level), §4.1 Central Processing Unit (CPU) Architecture
 
-### AP
-**AP CS Principles** treats the CPU at a high level (the fetch-execute idea, not register names). **AP CSA** does not cover hardware architecture. *(No formula-sheet relevance — this is a model, not a formula card.)*
+"Show understanding of the basic Von Neumann model for a computer system and the stored program concept"; "the purpose and role of registers, including the difference between general purpose and special purpose registers", the special-purpose list being PC, MDR, MAR, ACC, Index Register (IX), CIR and the Status Register; "the purpose and roles of the Arithmetic and Logic Unit (ALU), Control Unit (CU) and system clock, Immediate Access Store (IAS)"; data transfer "using the address bus, data bus and control bus"; and the performance factors "processor type and number of cores, the bus width, clock speed, cache memory". Assembly and addressing modes are §4.2 ([[Assembly Language]]).
+
+### IB Computer Science (2027 guide), A1.1
+
+A1.1.1 "Describe the functions and interactions of the main CPU components": "Units: arithmetic logic unit (ALU), control unit (CU)"; "Registers: instruction register (IR), program counter (PC), memory address register (MAR), memory data register (MDR), accumulator (AC)"; "Buses: address, data, control"; "Processors: single core processor, multi-core processor, co-processors"; and "a diagrammatic representation of the relationship between the specified CPU components". A1.1.5 "Describe the fetch, decode and execute cycle": "the basic operations a CPU performs to execute a single instruction in machine language" and "the interaction between memory and registers via the three buses". Note the IB names: IR for CIR, AC for ACC. Pipelining in multi-core architectures is A1.1.6, HL only ([[Pipelining and Simultaneous Multithreading]]).
+
+### Where this is *not* examined, and what is unverified
+
+AP Computer Science A has no hardware architecture. The AP Computer Science Principles course description is not on file, so its high-level treatment of the fetch–execute idea, stated in an earlier version, is not verified here.
 
 ## Connections
 
 - **Prerequisite:** [[Logic Gates]] — the ALU and the registers are built from gates; an adder *is* gates. [[Number Bases]] — machine-code instructions and addresses are binary.
-- **The modern realisation:** [[Pipelining and Simultaneous Multithreading]] — the same fetch-execute cycle, accelerated (overlapped, reordered, run on many units and cores). This card is the model; that card is the speed.
-- **The ancestors (reserved):** [[Turing Machine]] — the 1936 *theoretical* universal machine (what is computable); [[Von Neumann machine]] — the 1945 *architectural* ancestor (the stored-program idea this card runs on). The lineage Turing → von Neumann → the FDE CPU.
-- **Extends to (reserved):** [[Assembly Language]] — the human-readable form of the machine code the CU decodes (9618 §4.2). [[The Modern CPU vs the Textbook Model]] — how far a real core has grown past this 5-register picture.
+- **The modern realisation:** [[Pipelining and Simultaneous Multithreading]] — the same fetch-execute cycle, accelerated (overlapped, reordered, run on many units and cores). The basic model explains each instruction; pipelining explains how their execution overlaps.
+- **The ancestors:** [[Turing Machine]] — the 1936 *theoretical* universal machine (what is computable); [[Von Neumann machine]] — the 1945 *architectural* ancestor (the stored-program idea behind this model). The lineage Turing → von Neumann → the FDE CPU.
+- **Extends to:** [[Assembly Language]] — the human-readable form of the machine code the CU decodes (9618 §4.2). **The Modern CPU vs the Textbook Model** *(not yet released)* — how far a real core has grown past this 5-register picture.
 - **Uses:** [[Overflow and Underflow]] — the status-register carry/overflow flags are set by the ALU here.
 - **History:** [[Stories/The Boolean-to-Silicon Bridge]] — Turing's universal machine, von Neumann's 1945 EDVAC report, and the road to silicon; [[You Never Expect the Change of Needs]] — what doubling the register file quietly bought when x86 went 64-bit: fewer trips to memory, and a gift gamers could feel.
 

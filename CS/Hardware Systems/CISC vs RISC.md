@@ -26,6 +26,10 @@ tags:
 
 ## 中文锚点
 
+手机靠一块小小的电池能用一整天，从来不需要风扇；而在很多年里，干着差不多活儿的笔记本电脑却烫手，风扇呼呼地转。原因之一，是几十年前人们在“处理器的指令应该长什么样”这件事上做的一个选择。一派给处理器一大套功能很强的指令，有的一条就能干完本来要好几步才能干完的事。这样写出来的程序短，可芯片光是为了弄明白每条指令到底要它干什么，就得搭上一大堆电路。另一派只允许少数几条简单的指令，长度全都一样，每条只干一件小事。这样写出来的程序长，可芯片一眼就能认出每条指令，所以电路小、发热少；又因为指令的形状都一样，芯片可以在上一条还没做完的时候就开始做下一条，像食堂打饭的流水线。手机走的是第二条路，因为电池没给它别的选择。后来这条界线变模糊了：今天笔记本里的芯片，会在内部悄悄地把大指令拆成小指令来执行。
+
+### 术语对照 (Terms)
+
 | English | 中文 | one-line meaning |
 |---|---|---|
 | instruction set architecture (ISA) | 指令集架构 | the contract between software and silicon: which instructions exist, and what they promise |
@@ -72,9 +76,9 @@ That is why the syllabus pairs "pipelining and registers" with RISC by name: the
 
 ## Interrupt handling on the two — the trade nobody mentions first
 
-[[Interrupt Handling]]'s golden rule was *finish the current instruction, then answer the door*. Now notice what that rule costs on each side:
+The simple model in [[Interrupt Handling]] is *finish the current instruction, then answer the door*. Compare the design trade-offs; the ISA label alone does not determine a real processor's interrupt latency:
 
-- **On RISC, the rule is cheap.** Every instruction finishes in a cycle or so — the doorbell never waits long, and the scene to protect is small and uniform. Interrupt latency is short and, crucially, *predictable* — one reason RISC cores own the [[Embedded Systems]] world, where the airbag's deadline is the whole point.
+- **On a simple RISC implementation, the rule is easier to manage.** Short, regular operations help bound the wait and simplify the saved state. Real latency still depends on the pipeline, cache misses, interrupt masking and the implementation; even a RISC load can stall. Predictable response matters in [[Embedded Systems]], where the airbag's deadline is the whole point.
 - **On CISC, the rule bites.** What if the interrupt arrives mid-way through one grand instruction — a string-copy moving thousands of bytes? Waiting for it to finish could take thousands of cycles: unacceptable latency. So CISC processors must make long instructions **interruptible and resumable** — pausing partway, saving *extra internal state* (how far did the copy get?), and restarting cleanly afterwards. It works, but the interrupt machinery grows complicated exactly in proportion to the instructions' grandeur.
 
 One sentence for the exam: *RISC finishes the short current instruction and responds quickly with a small saved state; CISC must either tolerate longer latency or support interrupting partially-completed instructions, saving additional state.*
@@ -83,13 +87,13 @@ One sentence for the exam: *RISC finishes the short current instruction and resp
 
 The war's ending is the best part. In the mid-1990s, x86 — the definitive CISC — faced a choice: keep the instruction set (a mountain of the world's software stood on it) or keep up with RISC pipelines. Intel's answer (Pentium Pro, 1995) was both: **keep the CISC contract outside, build a RISC engine inside.** A decoder at the front of the chip slices each fat x86 instruction into small, uniform **micro-ops**, which then flow through exactly the kind of wide, register-rich, pipelined core RISC pioneered. (A RISC front end has a decoder too — turning instruction bits into control signals is universal — but it is a thin, hardwired mapping. The x86 decoder must *translate* first — sentence into syllables — and only then do the ordinary bit-to-signals wiring.) Meanwhile ARM, the definitive RISC, grew multimedia extensions and denser encodings when markets demanded them.
 
-Say the trade out loud, because it is the whole point. The **reward is compatibility**: every binary compiled since 1978 kept running, unmodified, on each new chip — and that mountain of working software is the moat no rival ISA has crossed on the desktop. The **price is the translating decoder**, and the bill arrives in **watts**.
+Say the trade out loud, because it is the whole point. The **reward is compatibility**: a vast body of older x86 machine code remained usable when the required execution mode, operating system and interfaces were available — and that mountain of working software is the moat no rival ISA has crossed on the desktop. The **price is the translating decoder**, and the bill arrives in **watts**.
 
 ![[cisc-risc-classroom-comic.png|697]]
 
 ![[cisc-risc-convergence.svg|697]]
 
-So the honest modern statement is: **the ISA is a compatibility contract, not an engine blueprint.** Under the hood, everyone converged on the same wide, out-of-order, deeply pipelined machine. What still differs — and still matters — is the *cost of the contract*: x86's variable-length decode is a permanent tax — finding instruction boundaries burns power and limits decoder width — and it is a real part of why x86 never made it into your pocket, and why only Intel's newest manufacturing generations (the 18A-process chips of 2025–26) have finally pulled x86's battery appetite close to territory ARM laptops had held for years. Fixed-length RISC, by contrast, lets a designer bolt on very wide decoders almost for free — one enabler of Apple's M-series performance-per-watt. The war didn't end with a winner; it ended with **niches**: the legacy-software mountain runs on x86, and everything battery-powered — phones, earbuds, the ¥2 MCU, most of the world's processors by count — runs RISC.
+So the honest modern statement is: **the ISA is a compatibility contract, not an engine blueprint.** Many high-performance designs converged on wide, out-of-order, deeply pipelined execution; small microcontrollers often remain much simpler. What still differs — and still matters — is the *cost of the contract*: x86's variable-length decode is a permanent tax — finding instruction boundaries burns power and limits decoder width — and it is a real part of why x86 never made it into your pocket, and why only Intel's newest manufacturing generations (the 18A-process chips of 2025–26) have finally pulled x86's battery appetite close to territory ARM laptops had held for years. Fixed-length encodings simplify instruction-boundary detection for wider decoders — one enabler of Apple's M-series performance-per-watt. The war didn't end with a winner; it ended with **niches**: the legacy-software mountain runs on x86, and everything battery-powered — phones, earbuds, the ¥2 MCU, most of the world's processors by count — runs RISC.
 
 ## Worked example — the §15.1 three-parter
 
@@ -101,7 +105,7 @@ So the honest modern statement is: **the ISA is a compatibility contract, not an
 RISC has fewer, simpler instructions; CISC has many complex ones ✓. RISC instructions are fixed-length and aim at one cycle; CISC instructions vary in length and may take many cycles ✓. RISC is load/store (only dedicated instructions touch memory, using many registers); CISC instructions may operate on memory directly (fewer registers) ✓.
 
 *Tool for (b): the two pipeline requirements — boundaries and lockstep.*
-Fixed-length instructions mean the processor always knows where the next instruction begins, so fetching and decoding overlap cleanly ✓; single-cycle instructions keep every stage busy in lockstep, avoiding stalls ✓; multi-cycle CISC instructions of unpredictable length cause pipeline bubbles and complicate decoding ✓.
+Fixed-length instructions mean the processor always knows where the next instruction begins, so fetching and decoding overlap cleanly ✓; simple, regular operations make balanced pipeline stages easier to design ✓; multi-cycle CISC instructions of unpredictable length cause pipeline bubbles and complicate decoding ✓.
 
 *Tool for (c): finish-the-current-instruction, priced on each side.*
 A RISC processor simply completes the (short) current instruction, so interrupt latency is small and the saved state uniform ✓; a CISC processor may be mid-way through a long instruction and must either wait or interrupt it partway, saving additional internal state so it can resume ✓.
@@ -109,7 +113,7 @@ A RISC processor simply completes the (short) current instruction, so interrupt 
 ## Misconceptions
 
 > [!warning] "Reduced means weaker."
-> RISC machines compute everything CISC machines do — the *programs* are computationally identical ([[Turing Machine]] guarantees it). "Reduced" prices the *instructions*, not the machine: each does less, so the machine can do each faster, and the compiler composes them. The fastest supercomputers and every phone flagship are RISC.
+> RISC machines compute everything CISC machines do — the *programs* are computationally identical ([[Turing Machine]] guarantees it). "Reduced" prices the *instructions*, not the machine: each does less, so the machine can do each faster, and the compiler composes them. RISC designs power leading supercomputers and phone processors.
 
 > [!warning] "Reduced means a short instruction list."
 > Modern ARM has hundreds of instructions. What is reduced is the **complexity per instruction** — fixed length, register-to-register, one memory idea (load/store), pipeline-friendly timing. RISC is a discipline, not a diet.
@@ -124,8 +128,8 @@ A RISC processor simply completes the (short) current instruction, so interrupt 
 
 ### Cambridge 9618 A-Level — §15.1 (the processor half)
 
-- **The LO bullets verbatim:** differences between RISC and CISC (the philosophy table — quote contrasting *pairs*); **interrupt handling on CISC and RISC processors** (the finish-the-instruction trade above — this is the bullet [[Interrupt Handling]] reserved for this card); the **importance of pipelining and registers in RISC** (the two pipeline requirements + load/store needing a large register file).
-- §15.1's other residents live elsewhere: the four architectures **SISD/SIMD/MISD/MIMD** and massively parallel computing are in [[Pipelining and Simultaneous Multithreading]]; **virtual machines** remain the row's open item.
+- **The LO bullets verbatim:** differences between RISC and CISC (the philosophy table — quote contrasting *pairs*); **interrupt handling on CISC and RISC processors** (the interrupt-latency trade above; see [[Interrupt Handling]]); the **importance of pipelining and registers in RISC** (the two pipeline requirements + load/store needing a large register file).
+- §15.1's other residents live elsewhere: the four architectures **SISD/SIMD/MISD/MIMD** and massively parallel computing are in [[Pipelining and Simultaneous Multithreading]]; **virtual machines** — concept, roles, benefits and limitations — are taught in [[Operating Systems]].
 - Mark-scheme habit: answer in *pairs* ("RISC does X **whereas** CISC does Y") — single-sided statements often earn nothing.
 
 ### Other boards

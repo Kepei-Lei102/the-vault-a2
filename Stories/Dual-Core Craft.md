@@ -33,7 +33,7 @@ This is a story with no human villain — the protagonist is **the simulation it
 
 **为什么只用一个核？** 答案在**网络同步**。RTS 不传输"世界状态"（上千单位的坐标血量太大），只传输每个玩家的**操作指令**（commands）；每台机器跑**完全相同**的模拟，各自重建出一致的世界——这叫**锁步确定性模拟**（deterministic lockstep）。代价是：每台机器必须**逐比特一致**，否则"掉线不同步"（desync）。而保证确定性最便宜的办法，就是**单线程**——多线程的调度顺序本身是不确定的。
 
-这正是 [[Parallel and External Sorting|并行排序]] 里 **Amdahl 定律**的故事：模拟是那段无法并行的"串行部分"，再多核也救不了它。后来游戏行业用**任务系统**与**ECS**（实体-组件-系统）架构，把能独立的部分拆开并行——*恰好是这座知识库自己的组织方式*。
+这正是 **并行排序** *(not yet released)* 里 **Amdahl 定律**的故事：模拟是那段无法并行的"串行部分"，再多核也救不了它。后来游戏行业用**任务系统**与**ECS**（实体-组件-系统）架构，把能独立的部分拆开并行——*恰好是这座知识库自己的组织方式*。
 
 ## Act I — "Dual-Core Craft"
 
@@ -65,7 +65,7 @@ In **March 2005**, the C++ architect **Herb Sutter** ended it with an essay titl
 
 ![[dual-core-craft-free-lunch-comic.png|697]]
 
-This is exactly **Amdahl's law** from [[Parallel and External Sorting]]. If a fraction of your work is stuck running serially, the speedup from extra cores has a hard ceiling of $1/(\text{serial fraction})$ — and a fraction that *cannot* be parallelized gets *nothing* from more cores. StarCraft's simulation is that serial fraction made flesh: **Amdahl's law wearing a Zerg costume.** The lockstep bargain that once let a 28.8k modem carry an army had become, by 2010, the chain bolting the whole game to a single core while fifteen others looked on.
+This is exactly **Amdahl's law** from **Parallel and External Sorting** *(not yet released)*. If a fraction of your work is stuck running serially, the speedup from extra cores has a hard ceiling of $1/(\text{serial fraction})$ — and a fraction that *cannot* be parallelized gets *nothing* from more cores. StarCraft's simulation is that serial fraction made flesh: **Amdahl's law wearing a Zerg costume.** The lockstep bargain that once let a 28.8k modem carry an army had become, by 2010, the chain bolting the whole game to a single core while fifteen others looked on.
 
 ## Act IV — The slow climb back
 
@@ -82,7 +82,7 @@ Blizzard's own **Overwatch** team put ECS on the AAA map with Timothy Ford's 201
 
 Here is the twist the tidy version hides. The kind of game that needs parallelism *most* — a massive simulation of thousands of mutually-interacting units — is exactly the kind that determinism makes *hardest* to parallelize. And Overwatch, the poster child for the cure, **never actually had StarCraft's disease.** Overwatch is a 6v6 (later 5v5) hero shooter — a few dozen entities, run on an authoritative server with client-side prediction, *not* lockstep. Its ECS payoff was code clarity and clean netcode, not a thousand-units crisis it never faced. It is a different *shape* of game. "Overwatch solved what StarCraft couldn't" is too neat: they were never fighting the same battle.
 
-The honest heir to StarCraft's problem is **Factorio** — a factory-builder whose deterministic-lockstep multiplayer simulates *hundreds of thousands* of belts, machines, and biters in perfect sync. Its developers' public *Friday Facts* devblog is a running lab notebook of this exact fight: they parallelize the genuinely independent subsystems (pollution spread, parts of pathfinding, fluid flow) and keep the core update **serial**, because lockstep forbids the non-deterministic ordering that multithreading invites. That is the [[Parallel and External Sorting|parallel-sort]] lesson lived out in a shipping game — *parallelize what is independent, accept the serial tail* — and it is why Factorio runs enormous factories on hardware that should not manage them.
+The honest heir to StarCraft's problem is **Factorio** — a factory-builder whose deterministic-lockstep multiplayer simulates *hundreds of thousands* of belts, machines, and biters in perfect sync. Its developers' public *Friday Facts* devblog is a running lab notebook of this exact fight: they parallelize the genuinely independent subsystems (pollution spread, parts of pathfinding, fluid flow) and keep the core update **serial**, because lockstep forbids the non-deterministic ordering that multithreading invites. That is the **parallel-sort** *(not yet released)* lesson lived out in a shipping game — *parallelize what is independent, accept the serial tail* — and it is why Factorio runs enormous factories on hardware that should not manage them.
 
 Two more honest edges. **"Dual-Core Craft" is a meme that flatters itself with precision** — SC2 does spin up extra threads for audio and asset streaming — but the load-bearing truth survives: its *simulation* is effectively one thread, and its performance scales with one or two fast cores, not with core *count*. And **ECS was not Overwatch's invention.** Component-based game-object systems go back to the early 2000s — Scott Bilas's *Dungeon Siege* engine (GDC 2002), the Thief/Dark engine, and Adam Martin's blog series that fixed the *"Entity System"* name around 2007. Overwatch *popularized* ECS; it did not originate it — a clean case for [[Stories/Stigler's Law of Eponymy]], where the name attaches to whoever explained it best, not whoever did it first.
 
@@ -96,7 +96,7 @@ Two more honest edges. **"Dual-Core Craft" is a meme that flatters itself with p
 
 ## Where this surfaces in the vault
 
-- **The pedagogical home:** [[Parallel and External Sorting]] — *parallelism changes time, not work, and only when the work is independent.* This Story is that card's thesis dressed in a Zerg costume: the RTS simulation is the canonical **dependent** workload, and Amdahl's law is the verdict.
+- **The pedagogical home:** **Parallel and External Sorting** *(not yet released)* — *parallelism changes time, not work, and only when the work is independent.* This Story is that card's thesis dressed in a Zerg costume: the RTS simulation is the canonical **dependent** workload, and Amdahl's law is the verdict.
 - **The next card it foreshadows:** [[Pipelining and Simultaneous Multithreading]] — *why* a single fast core can do so much (and why ECS's packed arrays feed it so well) is the pipeline-and-SMT story.
 - **The compression insight:** [[Information Theory]] — lockstep ships commands, not state, because the commands are the compressed representation of the world.
 - **The eponymy footnote:** [[Stories/Stigler's Law of Eponymy]] — "Overwatch's ECS" as a textbook case of a pattern named for its popularizer, not its inventor.
